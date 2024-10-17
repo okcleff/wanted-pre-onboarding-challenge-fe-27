@@ -1,23 +1,20 @@
 import { useState } from "react";
-import { usePostSignup } from "../queries/auth";
-import CommonInput from "../components/CommonInput";
-import { emailRegex } from "../utils";
-import { SIGNUP_VALIDATION_ERRORS } from "../constants/auth";
+import { usePostSignin } from "../../queries/auth";
+import CommonInput from "../../components/common/CommonInput";
+import { emailRegex } from "../../utils";
+import { AUTH_VALIDATION_ERRORS } from "../../constants/auth";
 
-interface FormData {
+type SigninForm = {
   email: string;
   password: string;
-}
+};
 
-interface FormErrors {
-  email: string;
-  password: string;
-}
+type FormErrors = SigninForm;
 
 const MIN_PASSWORD_LENGTH = 8;
 
-const SignUp = () => {
-  const [formData, setFormData] = useState<FormData>({
+const Signin = () => {
+  const [signInForm, setSignInForm] = useState<SigninForm>({
     email: "",
     password: "",
   });
@@ -29,19 +26,19 @@ const SignUp = () => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // 유효성 검사 함수 통합
+  // 유효성 검사 함수
   const validateField = (name: string, value: string): string => {
     switch (name) {
       case "email":
-        if (!value) return SIGNUP_VALIDATION_ERRORS.EMPTY_EMAIL;
+        if (!value) return AUTH_VALIDATION_ERRORS.EMPTY_EMAIL;
         if (!emailRegex.test(value)) {
-          return SIGNUP_VALIDATION_ERRORS.INVALID_EMAIL;
+          return AUTH_VALIDATION_ERRORS.INVALID_EMAIL;
         }
         break;
       case "password":
-        if (!value) return SIGNUP_VALIDATION_ERRORS.EMPTY_PASSWORD;
+        if (!value) return AUTH_VALIDATION_ERRORS.EMPTY_PASSWORD;
         if (value.length < MIN_PASSWORD_LENGTH) {
-          return SIGNUP_VALIDATION_ERRORS.INVALID_PASSWORD;
+          return AUTH_VALIDATION_ERRORS.INVALID_PASSWORD;
         }
         break;
       default:
@@ -54,7 +51,7 @@ const SignUp = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setFormData((prevData) => ({
+    setSignInForm((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -72,16 +69,16 @@ const SignUp = () => {
   // 폼 전체 유효성 검사
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {
-      email: validateField("email", formData.email),
-      password: validateField("password", formData.password),
+      email: validateField("email", signInForm.email),
+      password: validateField("password", signInForm.password),
     };
 
     setErrors(newErrors);
     return !newErrors.email && !newErrors.password;
   };
 
-  const { mutate: postSignupMutation, isPending: isPostSignupPending } =
-    usePostSignup();
+  const { mutate: postSigninMutation, isPending: isPostSigninPending } =
+    usePostSignin();
 
   // 폼 제출 처리
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -89,7 +86,7 @@ const SignUp = () => {
     setIsSubmitted(true);
 
     if (validateForm()) {
-      postSignupMutation(formData);
+      postSigninMutation(signInForm);
     }
   };
 
@@ -97,7 +94,7 @@ const SignUp = () => {
     <>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          회원가입
+          로그인
         </h2>
       </div>
 
@@ -111,7 +108,7 @@ const SignUp = () => {
               type="email"
               required
               placeholder="you@example.com"
-              value={formData.email}
+              value={signInForm.email}
               onChange={handleInputChange}
               errorMessage={errors.email}
             />
@@ -123,7 +120,7 @@ const SignUp = () => {
               type="password"
               required
               placeholder="********"
-              value={formData.password}
+              value={signInForm.password}
               onChange={handleInputChange}
               errorMessage={errors.password}
             />
@@ -133,10 +130,12 @@ const SignUp = () => {
                 type="submit"
                 className="w-full py-2 mt-8 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200"
                 disabled={
-                  !formData.email || !formData.password || isPostSignupPending
+                  !signInForm.email ||
+                  !signInForm.password ||
+                  isPostSigninPending
                 }
               >
-                가입하기
+                로그인
               </button>
             </div>
           </form>
@@ -146,4 +145,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Signin;

@@ -2,36 +2,40 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { axiosInstance } from "./axiosInstance";
 
-interface SignupFormData {
+type SignupFormData = {
   email: string;
   password: string;
-}
+};
 
-interface SignupResponse {
+type SignupResponse = {
   message: string;
   token: string;
-}
+};
 
-interface SignupError {
+type SignupError = {
   response: {
     data: {
       details: string;
     };
   };
-}
+};
 
-// 회원가입 요청 함수
+/**
+ * Sends a POST request to create a new user with the provided signup form data.
+ *
+ * @param {SignupFormData} signupForm - The user's signup information, including email and password.
+ * @returns {Promise<SignupResponse>} - A promise that resolves to the server's response upon successful signup.
+ */
 const postSignup = async (
-  formData: SignupFormData
+  signupForm: SignupFormData
 ): Promise<SignupResponse> => {
   const response = await axiosInstance.post<SignupResponse>(
     "/users/create",
-    formData
+    signupForm
   );
   return response.data;
 };
 
-// useMutation을 사용한 회원가입 훅
 export const usePostSignup = (): UseMutationResult<
   SignupResponse,
   SignupError,
@@ -50,6 +54,38 @@ export const usePostSignup = (): UseMutationResult<
       alert(
         error.response.data.details ||
           "회원가입에 실패했습니다. 잠시 후 다시 시도해주세요."
+      );
+    },
+  });
+};
+
+export const postSignin = async (
+  signinForm: SignupFormData
+): Promise<SignupResponse> => {
+  const response = await axiosInstance.post<SignupResponse>(
+    "/users/login",
+    signinForm
+  );
+  return response.data;
+};
+
+export const usePostSignin = (): UseMutationResult<
+  SignupResponse,
+  SignupError,
+  SignupFormData
+> => {
+  const navigate = useNavigate();
+
+  return useMutation<SignupResponse, SignupError, SignupFormData>({
+    mutationFn: postSignin,
+    onSuccess: (res) => {
+      localStorage.setItem("token", res.token);
+      navigate("/");
+    },
+    onError: (error) => {
+      alert(
+        error.response.data.details ||
+          "로그인에 실패했습니다. 잠시 후 다시 시도해주세요."
       );
     },
   });
