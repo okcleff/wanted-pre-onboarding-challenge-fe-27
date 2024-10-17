@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import Signup from "./pages/auth/Signup";
-import Signin from "./pages/auth/Signin";
+import AuthPage from "./pages/auth/AuthPage";
 import AuthLayout from "./components/layouts/AuthLayout";
 import AuthMiddleware from "./components/middleware/AuthMiddleware";
 
@@ -12,7 +11,7 @@ const App = () => {
           path="/auth/signup"
           element={
             <AuthMiddleware>
-              <Signup />
+              <AuthPage />
             </AuthMiddleware>
           }
         />
@@ -20,7 +19,7 @@ const App = () => {
           path="/auth/signin"
           element={
             <AuthMiddleware>
-              <Signin />
+              <AuthPage />
             </AuthMiddleware>
           }
         />

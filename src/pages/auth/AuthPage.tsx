@@ -1,20 +1,26 @@
 import { useState } from "react";
-import { usePostSignin } from "../../queries/auth";
+import { useNavigate, useLocation } from "react-router-dom";
+import { usePostSignup, usePostSignin } from "../../queries/auth";
 import CommonInput from "../../components/common/CommonInput";
+import CommonButton from "../../components/common/CommonButton";
 import { emailRegex } from "../../utils";
 import { AUTH_VALIDATION_ERRORS } from "../../constants/auth";
 
-type SigninForm = {
+type SubmitData = {
   email: string;
   password: string;
 };
 
-type FormErrors = SigninForm;
+type FormErrors = SubmitData;
 
 const MIN_PASSWORD_LENGTH = 8;
 
-const Signin = () => {
-  const [signInForm, setSignInForm] = useState<SigninForm>({
+const AuthPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isSignup = location.pathname.includes("/signup");
+
+  const [submitData, setSubmitData] = useState<SubmitData>({
     email: "",
     password: "",
   });
@@ -26,7 +32,6 @@ const Signin = () => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // 유효성 검사 함수
   const validateField = (name: string, value: string): string => {
     switch (name) {
       case "email":
@@ -47,11 +52,10 @@ const Signin = () => {
     return "";
   };
 
-  // 입력 값 변경 처리 및 유효성 검사
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setSignInForm((prevData) => ({
+    setSubmitData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -66,27 +70,30 @@ const Signin = () => {
     }
   };
 
-  // 폼 전체 유효성 검사
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {
-      email: validateField("email", signInForm.email),
-      password: validateField("password", signInForm.password),
+      email: validateField("email", submitData.email),
+      password: validateField("password", submitData.password),
     };
 
     setErrors(newErrors);
     return !newErrors.email && !newErrors.password;
   };
 
+  const { mutate: postSignupMutation, isPending: isPostSignupPending } =
+    usePostSignup();
+
   const { mutate: postSigninMutation, isPending: isPostSigninPending } =
     usePostSignin();
 
-  // 폼 제출 처리
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitted(true);
 
     if (validateForm()) {
-      postSigninMutation(signInForm);
+      return isSignup
+        ? postSignupMutation(submitData)
+        : postSigninMutation(submitData);
     }
   };
 
@@ -94,7 +101,7 @@ const Signin = () => {
     <>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          로그인
+          {isSignup ? "회원가입" : "로그인"}
         </h2>
       </div>
 
@@ -108,7 +115,7 @@ const Signin = () => {
               type="email"
               required
               placeholder="you@example.com"
-              value={signInForm.email}
+              value={submitData.email}
               onChange={handleInputChange}
               errorMessage={errors.email}
             />
@@ -120,24 +127,26 @@ const Signin = () => {
               type="password"
               required
               placeholder="********"
-              value={signInForm.password}
+              value={submitData.password}
               onChange={handleInputChange}
               errorMessage={errors.password}
             />
 
-            <div>
-              <button
-                type="submit"
-                className="w-full py-2 mt-8 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200"
-                disabled={
-                  !signInForm.email ||
-                  !signInForm.password ||
-                  isPostSigninPending
-                }
-              >
-                로그인
-              </button>
-            </div>
+            <CommonButton
+              type="submit"
+              disabled={isPostSignupPending || isPostSigninPending}
+              buttonText={isSignup ? "가입하기" : "로그인"}
+              className="mt-8"
+            />
+
+            {!isSignup && (
+              <CommonButton
+                type="button"
+                buttonText="회원가입하기"
+                className="bg-indigo-300 hover:bg-indigo-400 mt-4"
+                onClick={() => navigate("/auth/signup")}
+              />
+            )}
           </form>
         </div>
       </div>
@@ -145,4 +154,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default AuthPage;

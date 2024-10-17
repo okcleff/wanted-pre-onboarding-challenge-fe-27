@@ -1,8 +1,7 @@
 import React from "react";
 
-type CommonButtonProps = {
-  className?: string;
-  buttonText: string;
+type CommonButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  buttonText: string; // 필수 속성
 };
 
 const CommonButton: React.FC<CommonButtonProps> = ({
@@ -12,7 +11,7 @@ const CommonButton: React.FC<CommonButtonProps> = ({
 }) => {
   return (
     <button
-      className={`w-full py-2 mt-8 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 ${className}`}
+      className={`w-full py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 transition-colors ${className}`}
       {...props}
     >
       {buttonText}

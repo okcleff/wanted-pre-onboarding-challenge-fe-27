@@ -1,29 +1,16 @@
 import React from "react";
 
-interface IInputProps {
+type CommonInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   labelText?: string;
   labelClassName?: string;
-  id: string;
-  name: string;
-  type: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
-  required?: boolean;
   inputClassName?: string;
   errorMessage?: string;
-}
+};
 
-const CommonInput: React.FC<IInputProps> = ({
+const CommonInput: React.FC<CommonInputProps> = ({
+  id,
   labelText,
   labelClassName = "",
-  id,
-  name,
-  type,
-  value,
-  onChange,
-  placeholder = "",
-  required = false,
   inputClassName = "",
   errorMessage = "",
   ...props
@@ -42,13 +29,7 @@ const CommonInput: React.FC<IInputProps> = ({
       <div className="mt-1">
         <input
           id={id}
-          name={name}
-          type={type}
-          required={required}
           className={`w-full h-8 pl-2 border-1 border border-gray-200 rounded-sm ${inputClassName}`}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
           {...props}
         />
         {errorMessage && (
