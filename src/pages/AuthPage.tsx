@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { usePostSignup, usePostSignin } from "../../queries/auth";
-import CommonInput from "../../components/common/CommonInput";
-import CommonButton from "../../components/common/CommonButton";
-import { emailRegex } from "../../utils";
-import { AUTH_VALIDATION_ERRORS } from "../../constants/auth";
+import { usePostSignup, usePostSignin } from "../queries/auth";
+import CommonInput from "../components/common/CommonInput";
+import CommonButton from "../components/common/CommonButton";
+import { emailRegex } from "../utils";
+import { AUTH_VALIDATION_ERRORS } from "../constants/auth";
 
 type SubmitData = {
   email: string;

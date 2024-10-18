@@ -29,7 +29,7 @@ const CommonInput: React.FC<CommonInputProps> = ({
       <div className="mt-1">
         <input
           id={id}
-          className={`w-full h-8 pl-2 border-1 border border-gray-200 rounded-sm ${inputClassName}`}
+          className={`w-full px-3 border border-gray-200 rounded-sm ${inputClassName}`}
           {...props}
         />
         {errorMessage && (

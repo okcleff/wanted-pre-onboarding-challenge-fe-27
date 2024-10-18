@@ -7,10 +7,8 @@ const AuthMiddleware = ({ children }: { children: JSX.Element }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    // 토큰이 있으면 홈('/')으로 리다이렉트
-    if (token) {
-      navigate("/");
-    }
+    // 토큰이 있으면 홈('/')으로, 토큰이 없으면 로그인 페이지로 리다이렉트
+    navigate(token ? "/" : "/auth/signin");
   }, [navigate]);
 
   return children;

@@ -20,12 +20,6 @@ type SignupError = {
   };
 };
 
-/**
- * Sends a POST request to create a new user with the provided signup form data.
- *
- * @param {SignupFormData} signupForm - The user's signup information, including email and password.
- * @returns {Promise<SignupResponse>} - A promise that resolves to the server's response upon successful signup.
- */
 const postSignup = async (
   signupForm: SignupFormData
 ): Promise<SignupResponse> => {
