@@ -3,7 +3,7 @@ export type NewTodo = {
   content: string;
 };
 
-export type TodoReturnType = {
+export type TodoItem = {
   title: string;
   content: string;
   id: string;
@@ -11,12 +11,10 @@ export type TodoReturnType = {
   updatedAt: string;
 };
 
-export type UpdatedTodoItem = NewTodo & { id: string };
+export type GetTodoResponse = TodoItem[];
 
-export type GetTodoResponse = TodoReturnType[];
-
-export type CreateTodoResponse = TodoReturnType;
-export type UpdateTodoResponse = TodoReturnType;
+export type CreateTodoResponse = TodoItem;
+export type UpdateTodoResponse = TodoItem;
 
 export type TodoError = {
   response: {

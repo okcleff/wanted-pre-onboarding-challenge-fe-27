@@ -8,7 +8,7 @@ import {
 import { axiosAuthInstance } from "./axiosInstance";
 import {
   NewTodo,
-  UpdatedTodoItem,
+  TodoItem,
   GetTodoResponse,
   CreateTodoResponse,
   UpdateTodoResponse,
@@ -22,6 +22,7 @@ const handleAuthError = (
   callbackFn: () => void,
   customErrorMessage: string = "에러가 발생했습니다. 잠시 후 다시 시도해주세요."
 ) => {
+  // validateToken 함수에서 토큰이 없을 때 401 에러를 반환하도록 했으므로
   if (error.response.status === 401) {
     alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
     return callbackFn();
@@ -75,7 +76,7 @@ export const useGetTodos = () => {
 // ---------- 할 일 목록 조회 ----------
 
 // ---------- 할 일 수정 ----------
-const updateTodo = async (updatedTodo: UpdatedTodoItem) => {
+const updateTodo = async (updatedTodo: TodoItem) => {
   const { id, title, content } = updatedTodo;
   const response = await axiosAuthInstance.put(`/todos/${id}`, {
     title: title,
@@ -87,12 +88,12 @@ const updateTodo = async (updatedTodo: UpdatedTodoItem) => {
 export const useUpdateTodo = (): UseMutationResult<
   UpdateTodoResponse,
   TodoError,
-  UpdatedTodoItem
+  TodoItem
 > => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  return useMutation<UpdateTodoResponse, TodoError, UpdatedTodoItem>({
+  return useMutation<UpdateTodoResponse, TodoError, TodoItem>({
     mutationFn: updateTodo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY });

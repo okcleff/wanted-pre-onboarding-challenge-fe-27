@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import CommonInput from "../common/CommonInput";
 import { useUpdateTodo } from "../../queries/todo";
-import { UpdatedTodoItem } from "../../types/todo";
+import { TodoItem } from "../../types/todo";
 
 type TodoDetailProps = {
-  selectedTodo: UpdatedTodoItem | null;
-  setSelectedTodo: React.Dispatch<React.SetStateAction<UpdatedTodoItem | null>>;
+  selectedTodo: TodoItem | null;
+  setSelectedTodo: React.Dispatch<React.SetStateAction<TodoItem | null>>;
 };
 
 const TodoDetail: React.FC<TodoDetailProps> = ({
@@ -15,25 +15,20 @@ const TodoDetail: React.FC<TodoDetailProps> = ({
   const [editMode, setEditMode] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!selectedTodo) return;
     const { name, value } = e.target;
 
-    if (selectedTodo) {
-      setSelectedTodo({
-        ...selectedTodo,
-        [name]: value,
-      });
-    }
+    setSelectedTodo({
+      ...selectedTodo,
+      [name]: value,
+    });
   };
 
   const { mutate: updateTodo } = useUpdateTodo();
 
   const handleUpdateTodo = () => {
     if (!selectedTodo) return;
-    updateTodo({
-      id: selectedTodo.id,
-      title: selectedTodo.title,
-      content: selectedTodo.content,
-    });
+    updateTodo(selectedTodo);
     setEditMode(false);
   };
 

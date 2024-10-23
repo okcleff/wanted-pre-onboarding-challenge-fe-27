@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import TodoAdd from "../components/Todo/TodoAdd";
-import TodoList from "../components/Todo/TodoList";
-import TodoDetail from "../components/Todo/TodoDetail";
+import TodoAdd from "../components/todo/TodoAdd";
+import TodoList from "../components/todo/TodoList";
+import TodoDetail from "../components/todo/TodoDetail";
 import { useGetTodos } from "../queries/todo";
-import { UpdatedTodoItem } from "../types/todo";
+import { TodoItem } from "../types/todo";
 
 const TodoPage: React.FC = () => {
   const { data: todos, isLoading, isError } = useGetTodos();
 
-  const [selectedTodo, setSelectedTodo] = useState<UpdatedTodoItem | null>(
-    null
-  );
+  const [selectedTodo, setSelectedTodo] = useState<TodoItem | null>(null);
 
   if (isLoading) return <div>Loading...</div>;
 

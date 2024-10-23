@@ -1,29 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { axiosInstance } from "./axiosInstance";
+import { AuthFormData, AuthResponse, AuthError } from "../types/auth";
 
-type SignupFormData = {
-  email: string;
-  password: string;
-};
-
-type SignupResponse = {
-  message: string;
-  token: string;
-};
-
-type SignupError = {
-  response: {
-    data: {
-      details: string;
-    };
-  };
-};
-
-const postSignup = async (
-  signupForm: SignupFormData
-): Promise<SignupResponse> => {
-  const response = await axiosInstance.post<SignupResponse>(
+const postSignup = async (signupForm: AuthFormData): Promise<AuthResponse> => {
+  const response = await axiosInstance.post<AuthResponse>(
     "/users/create",
     signupForm
   );
@@ -31,13 +12,13 @@ const postSignup = async (
 };
 
 export const usePostSignup = (): UseMutationResult<
-  SignupResponse,
-  SignupError,
-  SignupFormData
+  AuthResponse,
+  AuthError,
+  AuthFormData
 > => {
   const navigate = useNavigate();
 
-  return useMutation<SignupResponse, SignupError, SignupFormData>({
+  return useMutation<AuthResponse, AuthError, AuthFormData>({
     mutationFn: postSignup,
     onSuccess: (res) => {
       localStorage.setItem("token", res.token);
@@ -54,9 +35,9 @@ export const usePostSignup = (): UseMutationResult<
 };
 
 export const postSignin = async (
-  signinForm: SignupFormData
-): Promise<SignupResponse> => {
-  const response = await axiosInstance.post<SignupResponse>(
+  signinForm: AuthFormData
+): Promise<AuthResponse> => {
+  const response = await axiosInstance.post<AuthResponse>(
     "/users/login",
     signinForm
   );
@@ -64,13 +45,13 @@ export const postSignin = async (
 };
 
 export const usePostSignin = (): UseMutationResult<
-  SignupResponse,
-  SignupError,
-  SignupFormData
+  AuthResponse,
+  AuthError,
+  AuthFormData
 > => {
   const navigate = useNavigate();
 
-  return useMutation<SignupResponse, SignupError, SignupFormData>({
+  return useMutation<AuthResponse, AuthError, AuthFormData>({
     mutationFn: postSignin,
     onSuccess: (res) => {
       localStorage.setItem("token", res.token);
