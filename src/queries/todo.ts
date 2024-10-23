@@ -3,36 +3,35 @@ import {
   useQuery,
   useMutation,
   UseMutationResult,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { axiosAuthInstance } from "./axiosInstance";
+import {
+  NewTodo,
+  UpdatedTodoItem,
+  GetTodoResponse,
+  CreateTodoResponse,
+  UpdateTodoResponse,
+  TodoError,
+} from "../types/todo";
 
-type TodoItem = {
-  title: string;
-  content: string;
+const TODO_LIST_FETCH_QUERY_KEY = ["todos"];
+
+const handleAuthError = (
+  error: TodoError,
+  callbackFn: () => void,
+  customErrorMessage: string = "에러가 발생했습니다. 잠시 후 다시 시도해주세요."
+) => {
+  if (error.response.status === 401) {
+    alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+    return callbackFn();
+  }
+
+  alert(error.response.data.details || customErrorMessage);
 };
 
-type TodoReturnType = {
-  title: string;
-  content: string;
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
-type GetTodoResponse = TodoReturnType[];
-
-type CreateTodoResponse = TodoReturnType;
-
-type TodoError = {
-  response: {
-    status: number;
-    data: {
-      details: string;
-    };
-  };
-};
-
-const postNewTodo = async (todo: TodoItem) => {
+// ---------- 새 할 일 추가 ----------
+const postNewTodo = async (todo: NewTodo) => {
   const response = await axiosAuthInstance.post("/todos", todo);
   return response.data;
 };
@@ -40,29 +39,28 @@ const postNewTodo = async (todo: TodoItem) => {
 export const usePostNewTodo = (): UseMutationResult<
   CreateTodoResponse,
   TodoError,
-  TodoItem
+  NewTodo
 > => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  return useMutation<CreateTodoResponse, TodoError, TodoItem>({
+  return useMutation<CreateTodoResponse, TodoError, NewTodo>({
     mutationFn: postNewTodo,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY });
       alert("할 일이 추가되었습니다.");
     },
-    onError: (error) => {
-      if (error.response.status === 401) {
-        alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
-        return navigate("/auth/signin");
-      }
-
-      alert(
-        error.response.data.details ||
-          "할 일 추가에 실패했습니다. 잠시 후 다시 시도해주세요."
-      );
-    },
+    onError: (error) =>
+      handleAuthError(
+        error,
+        () => navigate("/auth/signin"),
+        "할 일을 추가하는데 실패했습니다."
+      ),
   });
 };
+// ---------- 새 할 일 추가 ----------
 
+// ---------- 할 일 목록 조회 ----------
 const getTodos = async () => {
   const response = await axiosAuthInstance.get("/todos");
   return response.data.data;
@@ -70,7 +68,42 @@ const getTodos = async () => {
 
 export const useGetTodos = () => {
   return useQuery<GetTodoResponse, TodoError>({
-    queryKey: ["todos"],
+    queryKey: TODO_LIST_FETCH_QUERY_KEY,
     queryFn: getTodos,
   });
 };
+// ---------- 할 일 목록 조회 ----------
+
+// ---------- 할 일 수정 ----------
+const updateTodo = async (updatedTodo: UpdatedTodoItem) => {
+  const { id, title, content } = updatedTodo;
+  const response = await axiosAuthInstance.put(`/todos/${id}`, {
+    title: title,
+    content: content,
+  });
+  return response.data;
+};
+
+export const useUpdateTodo = (): UseMutationResult<
+  UpdateTodoResponse,
+  TodoError,
+  UpdatedTodoItem
+> => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  return useMutation<UpdateTodoResponse, TodoError, UpdatedTodoItem>({
+    mutationFn: updateTodo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY });
+      alert("할 일이 수정되었습니다.");
+    },
+    onError: (error) =>
+      handleAuthError(
+        error,
+        () => navigate("/auth/signin"),
+        "할 일을 수정하는데 실패했습니다."
+      ),
+  });
+};
+// ---------- 할 일 수정 ----------

@@ -4,7 +4,6 @@ import { usePostSignup, usePostSignin } from "../queries/auth";
 import CommonInput from "../components/common/CommonInput";
 import CommonButton from "../components/common/CommonButton";
 import { emailRegex } from "../utils";
-import { AUTH_VALIDATION_ERRORS } from "../constants/auth";
 
 type SubmitData = {
   email: string;
@@ -35,15 +34,15 @@ const AuthPage = () => {
   const validateField = (name: string, value: string): string => {
     switch (name) {
       case "email":
-        if (!value) return AUTH_VALIDATION_ERRORS.EMPTY_EMAIL;
+        if (!value) return "이메일을 입력해주세요.";
         if (!emailRegex.test(value)) {
-          return AUTH_VALIDATION_ERRORS.INVALID_EMAIL;
+          return "이메일 형식에 맞게 입력해주세요.";
         }
         break;
       case "password":
-        if (!value) return AUTH_VALIDATION_ERRORS.EMPTY_PASSWORD;
+        if (!value) return "비밀번호를 입력해주세요.";
         if (value.length < MIN_PASSWORD_LENGTH) {
-          return AUTH_VALIDATION_ERRORS.INVALID_PASSWORD;
+          return "패스워드 길이는 8 이상이어야 합니다.";
         }
         break;
       default:
