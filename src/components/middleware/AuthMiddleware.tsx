@@ -8,7 +8,12 @@ const AuthMiddleware = ({ children }: { children: JSX.Element }) => {
     const token = localStorage.getItem("token");
 
     // 토큰이 있으면 홈('/')으로, 토큰이 없으면 로그인 페이지로 리다이렉트
-    navigate(token ? "/" : "/auth/signin");
+    if (token) {
+      navigate("/");
+    } else {
+      alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+      navigate("/auth/signin");
+    }
   }, [navigate]);
 
   return children;

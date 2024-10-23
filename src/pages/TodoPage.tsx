@@ -11,7 +11,7 @@ interface Todo {
 }
 
 const TodoPage: React.FC = () => {
-  const { data: todos, isFetching, refetch } = useGetTodos();
+  const { data: todos, isFetching, isError, refetch } = useGetTodos();
 
   const [newTodo, setNewTodo] = useState({
     title: "",
@@ -44,11 +44,16 @@ const TodoPage: React.FC = () => {
 
   if (isFetching) return <div>Loading...</div>;
 
+  if (isError)
+    return (
+      <div>목록을 조회하는데 실패했습니다. 잠시 후 다시 시도해주세요.</div>
+    );
+
   return (
-    <>
+    <div className="p-8">
       <h1 className="text-3xl font-bold mb-6">Todo List</h1>
 
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <section className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <h2 className="text-xl font-semibold mb-4">새로운 할 일 추가</h2>
         <div className="mb-4">
           <CommonInput
@@ -79,9 +84,9 @@ const TodoPage: React.FC = () => {
             {isPostNewTodoPending ? "추가 중..." : "추가"}
           </button>
         </div>
-      </div>
+      </section>
 
-      <div className="grid grid-cols-2 gap-4">
+      <section className="grid grid-cols-2 gap-4">
         <div>
           <h2 className="text-xl font-semibold mb-2">할 일 목록</h2>
           {todos?.length === 0 && <p>할 일이 없습니다.</p>}
@@ -152,8 +157,8 @@ const TodoPage: React.FC = () => {
             </div>
           )}
         </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
 };
 
