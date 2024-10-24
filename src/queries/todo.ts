@@ -6,7 +6,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { axiosAuthInstance } from "./axiosInstance";
-import {
+import type {
   NewTodo,
   TodoItem,
   GetTodoResponse,
@@ -17,6 +17,17 @@ import {
 
 const TODO_LIST_FETCH_QUERY_KEY = ["todos"];
 
+/**
+ * 인증 관련 에러를 처리하는 함수
+ * @param {TodoError} error - 발생한 에러 객체
+ * @param {Function} callbackFn - 401 에러 발생 시 실행될 콜백 함수
+ * @param {string} [customErrorMessage="에러가 발생했습니다. 잠시 후 다시 시도해주세요."] - 커스텀 에러 메시지
+ * @returns {void}
+ *
+ * @description
+ * - 401 에러일 경우 로그인 필요 메시지를 표시하고 콜백 함수를 실행합니다.
+ * - 그 외의 경우 서버에서 받은 에러 메시지나 커스텀 에러 메시지를 표시합니다.
+ */
 const handleAuthError = (
   error: TodoError,
   callbackFn: () => void,
@@ -108,3 +119,33 @@ export const useUpdateTodo = (): UseMutationResult<
   });
 };
 // ---------- 할 일 수정 ----------
+
+// ---------- 할 일 삭제 ----------
+const deleteTodo = async (id: string) => {
+  const response = await axiosAuthInstance.delete(`/todos/${id}`);
+  return response.data;
+};
+
+export const useDeleteTodo = (): UseMutationResult<
+  UpdateTodoResponse,
+  TodoError,
+  string
+> => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  return useMutation<UpdateTodoResponse, TodoError, string>({
+    mutationFn: deleteTodo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY });
+      alert("할 일이 삭제되었습니다.");
+    },
+    onError: (error) =>
+      handleAuthError(
+        error,
+        () => navigate("/auth/signin"),
+        "할 일을 삭제하는데 실패했습니다."
+      ),
+  });
+};
+// ---------- 할 일 삭제 ----------

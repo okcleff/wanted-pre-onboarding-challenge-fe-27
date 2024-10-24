@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { axiosInstance } from "./axiosInstance";
-import { AuthFormData, AuthResponse, AuthError } from "../types/auth";
+import type { AuthFormData, AuthResponse, AuthError } from "../types/auth";
 
+// ---------- 회원가입 ----------
 const postSignup = async (signupForm: AuthFormData): Promise<AuthResponse> => {
   const response = await axiosInstance.post<AuthResponse>(
     "/users/create",
@@ -33,7 +34,9 @@ export const usePostSignup = (): UseMutationResult<
     },
   });
 };
+// ---------- 회원가입 ----------
 
+// ---------- 로그인 ----------
 export const postSignin = async (
   signinForm: AuthFormData
 ): Promise<AuthResponse> => {
@@ -65,3 +68,4 @@ export const usePostSignin = (): UseMutationResult<
     },
   });
 };
+// ---------- 로그인 ----------

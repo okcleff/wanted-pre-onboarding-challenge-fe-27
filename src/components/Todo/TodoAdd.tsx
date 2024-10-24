@@ -19,7 +19,9 @@ const TodoAdd = () => {
   const { mutate: postNewTodo, isPending: isPostNewTodoPending } =
     usePostNewTodo();
 
-  const handleAddTodo = () => {
+  const handleAddTodo = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     postNewTodo(newTodo);
     setNewTodo({
       title: "",
@@ -28,7 +30,7 @@ const TodoAdd = () => {
   };
 
   return (
-    <>
+    <form onSubmit={handleAddTodo}>
       <h2 className="text-xl font-semibold mb-4">새로운 할 일 추가</h2>
       <div className="mb-4">
         <CommonInput
@@ -52,14 +54,14 @@ const TodoAdd = () => {
       </div>
       <div className="flex items-center justify-end">
         <button
-          onClick={handleAddTodo}
-          disabled={isPostNewTodoPending}
+          type="submit"
+          disabled={!newTodo.title || !newTodo.content || isPostNewTodoPending}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
         >
           {isPostNewTodoPending ? "추가 중..." : "추가"}
         </button>
       </div>
-    </>
+    </form>
   );
 };
 export default TodoAdd;

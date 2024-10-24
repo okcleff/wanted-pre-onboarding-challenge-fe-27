@@ -3,7 +3,7 @@ import TodoAdd from "../components/todo/TodoAdd";
 import TodoList from "../components/todo/TodoList";
 import TodoDetail from "../components/todo/TodoDetail";
 import { useGetTodos } from "../queries/todo";
-import { TodoItem } from "../types/todo";
+import type { TodoItem } from "../types/todo";
 
 const TodoPage: React.FC = () => {
   const { data: todos, isLoading, isError } = useGetTodos();

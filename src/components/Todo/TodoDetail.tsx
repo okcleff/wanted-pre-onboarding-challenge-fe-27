@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CommonInput from "../common/CommonInput";
-import { useUpdateTodo } from "../../queries/todo";
-import { TodoItem } from "../../types/todo";
+import CommonButton from "../common/CommonButton";
+import { useUpdateTodo, useDeleteTodo } from "../../queries/todo";
+import type { TodoItem } from "../../types/todo";
 
 type TodoDetailProps = {
   selectedTodo: TodoItem | null;
@@ -14,6 +15,10 @@ const TodoDetail: React.FC<TodoDetailProps> = ({
 }) => {
   const [editMode, setEditMode] = useState(false);
 
+  useEffect(() => {
+    setEditMode(false);
+  }, [selectedTodo]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!selectedTodo) return;
     const { name, value } = e.target;
@@ -24,12 +29,21 @@ const TodoDetail: React.FC<TodoDetailProps> = ({
     });
   };
 
-  const { mutate: updateTodo } = useUpdateTodo();
+  const { mutate: updateTodo, isPending: isUpdatedTodoPending } =
+    useUpdateTodo();
 
   const handleUpdateTodo = () => {
     if (!selectedTodo) return;
     updateTodo(selectedTodo);
     setEditMode(false);
+  };
+
+  const { mutate: deleteTodo } = useDeleteTodo();
+
+  const handleDeleteTodo = () => {
+    if (!selectedTodo) return;
+    deleteTodo(selectedTodo.id);
+    setSelectedTodo(null);
   };
 
   return (
@@ -38,7 +52,7 @@ const TodoDetail: React.FC<TodoDetailProps> = ({
       {selectedTodo && (
         <div className="border p-4 rounded">
           {editMode ? (
-            <div>
+            <form onSubmit={handleUpdateTodo}>
               <CommonInput
                 type="text"
                 name="title"
@@ -51,33 +65,46 @@ const TodoDetail: React.FC<TodoDetailProps> = ({
                 value={selectedTodo.content}
                 onChange={handleInputChange}
               />
-              <div className="flex justify-end">
-                <button
-                  onClick={handleUpdateTodo}
-                  className="bg-green-500 text-white p-2 rounded mr-2 hover:bg-green-600"
-                >
-                  저장
-                </button>
-                <button
+
+              <div className="flex justify-end gap-3 mt-5">
+                <CommonButton
+                  type="submit"
+                  buttonText="저장"
+                  disabled={
+                    !selectedTodo.title ||
+                    !selectedTodo.content ||
+                    isUpdatedTodoPending
+                  }
+                />
+                <CommonButton
+                  type="button"
+                  onClick={handleDeleteTodo}
+                  className="bg-red-500 hover:bg-red-600"
+                  buttonText="삭제"
+                />
+                <CommonButton
+                  type="button"
                   onClick={() => setEditMode(false)}
-                  className="bg-red-500 text-white p-2 rounded hover:bg-red-600"
-                >
-                  취소
-                </button>
+                  className="bg-white text-black"
+                  buttonText="취소"
+                />
               </div>
-            </div>
+            </form>
           ) : (
             <div>
               <h3 className="text-lg font-semibold mb-2">
                 {selectedTodo.title}
               </h3>
+
               <p>{selectedTodo.content}</p>
-              <button
-                onClick={() => setEditMode(true)}
-                className="mt-2 bg-yellow-500 text-white p-2 rounded hover:bg-yellow-600"
-              >
-                수정
-              </button>
+
+              <div className="flex justify-end gap-3 mt-5">
+                <CommonButton
+                  type="button"
+                  onClick={() => setEditMode(true)}
+                  buttonText="수정"
+                />
+              </div>
             </div>
           )}
         </div>
