@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import TodoAdd from "../components/todo/TodoAdd";
 import TodoList from "../components/todo/TodoList";
 import TodoDetail from "../components/todo/TodoDetail";
@@ -8,6 +8,13 @@ import type { TodoItem } from "../types/todo";
 import CommonButton from "../components/common/CommonButton";
 
 const TodoPage: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/auth/signin");
+  };
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { data: todos } = useGetTodos();
@@ -35,10 +42,7 @@ const TodoPage: React.FC = () => {
         <CommonButton
           type="button"
           buttonText="로그아웃"
-          onClick={() => {
-            localStorage.removeItem("token");
-            window.location.reload();
-          }}
+          onClick={handleLogout}
           className="w-20"
         />
       </div>
