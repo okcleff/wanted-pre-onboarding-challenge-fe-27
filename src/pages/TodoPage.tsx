@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import TodoAdd from "../components/todo/TodoAdd";
 import TodoList from "../components/todo/TodoList";
 import TodoDetail from "../components/todo/TodoDetail";
@@ -7,13 +7,7 @@ import { useGetTodos } from "../queries/todo";
 import type { TodoItem } from "../types/todo";
 
 const TodoPage: React.FC = () => {
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) navigate("/auth/signin");
-  }, [navigate]);
 
   const { data: todos } = useGetTodos();
 
