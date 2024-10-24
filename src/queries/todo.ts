@@ -60,7 +60,6 @@ export const usePostNewTodo = (): UseMutationResult<
     mutationFn: postNewTodo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY });
-      alert("할 일이 추가되었습니다.");
     },
     onError: (error) =>
       handleAuthError(
@@ -110,8 +109,6 @@ export const useUpdateTodo = (): UseMutationResult<
       queryClient.invalidateQueries({
         queryKey: TODO_LIST_FETCH_QUERY_KEY,
       });
-
-      alert("할 일이 수정되었습니다.");
     },
     onError: (error) =>
       handleAuthError(
@@ -141,7 +138,6 @@ export const useDeleteTodo = (): UseMutationResult<
     mutationFn: deleteTodo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY });
-      alert("할 일이 삭제되었습니다.");
     },
     onError: (error) =>
       handleAuthError(

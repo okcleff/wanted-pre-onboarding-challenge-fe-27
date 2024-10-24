@@ -23,11 +23,11 @@ const isAuthenticated = () => {
 };
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-  return isAuthenticated() ? children : <Navigate to="/auth/signin" />;
+  return isAuthenticated() ? children : <Navigate to="/auth/signin" replace />;
 };
 
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
-  return !isAuthenticated() ? children : <Navigate to="/" />;
+  return !isAuthenticated() ? children : <Navigate to="/" replace />;
 };
 
 const App: React.FC = () => {
