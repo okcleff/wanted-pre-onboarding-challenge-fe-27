@@ -6,34 +6,42 @@ import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import TodoPage from "./pages/TodoPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import AuthLayout from "./components/layouts/AuthLayout";
+import AuthLayout from "./components/layout/AuthLayout";
 import ErrorBoundaryWrapper from "./components/common/ErrorBoundaryWrapper";
 
-const isSignedIn = !!localStorage.getItem("token");
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+});
+
+const isAuthenticated = () => {
+  return !!localStorage.getItem("token");
+};
+
+const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+  return isAuthenticated() ? children : <Navigate to="/auth/signin" />;
+};
+
+const PublicRoute = ({ children }: { children: React.ReactNode }) => {
+  return !isAuthenticated() ? children : <Navigate to="/" />;
+};
 
 const App: React.FC = () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-        retry: false,
-      },
-    },
-  });
-
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>
         <Route
           path="/"
           element={
-            isSignedIn ? (
-              <ErrorBoundaryWrapper>
+            <ErrorBoundaryWrapper>
+              <PrivateRoute>
                 <TodoPage />
-              </ErrorBoundaryWrapper>
-            ) : (
-              <Navigate to="/auth/signin" replace />
-            )
+              </PrivateRoute>
+            </ErrorBoundaryWrapper>
           }
         />
 
@@ -50,18 +58,15 @@ const App: React.FC = () => {
           <Route
             path="/auth/signin"
             element={
-              isSignedIn ? (
-                <Navigate to="/" replace />
-              ) : (
-                <ErrorBoundaryWrapper>
+              <ErrorBoundaryWrapper>
+                <PublicRoute>
                   <SigninPage />
-                </ErrorBoundaryWrapper>
-              )
+                </PublicRoute>
+              </ErrorBoundaryWrapper>
             }
           />
         </Route>
 
-        {/* 404 페이지 */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
 

@@ -5,6 +5,7 @@ import TodoList from "../components/todo/TodoList";
 import TodoDetail from "../components/todo/TodoDetail";
 import { useGetTodos } from "../queries/todo";
 import type { TodoItem } from "../types/todo";
+import CommonButton from "../components/common/CommonButton";
 
 const TodoPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -30,6 +31,18 @@ const TodoPage: React.FC = () => {
 
   return (
     <div className="p-8">
+      <div className="flex justify-end">
+        <CommonButton
+          type="button"
+          buttonText="로그아웃"
+          onClick={() => {
+            localStorage.removeItem("token");
+            window.location.reload();
+          }}
+          className="w-20"
+        />
+      </div>
+
       <h1 className="text-3xl font-bold mb-6">Todo List</h1>
 
       <section className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">

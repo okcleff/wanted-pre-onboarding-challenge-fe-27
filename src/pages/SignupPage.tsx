@@ -1,9 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import AuthPageTitle from "../components/auth/AuthPageTitle";
 import AuthInputSection from "../components/auth/AuthInputSection";
+import CommonButton from "../components/common/CommonButton";
 import { usePostSignup } from "../queries/auth";
 import useAuthInput from "../hooks/useAuthInput";
 
 const SignupPage = () => {
+  const navigate = useNavigate();
+
   const { mutate: postSignupMutation, isPending: isPostSignupPending } =
     usePostSignup();
 
@@ -18,6 +22,12 @@ const SignupPage = () => {
           submitFunc={postSignupMutation}
           buttonText="가입하기"
           isPending={isPostSignupPending}
+        />
+        <CommonButton
+          type="button"
+          buttonText="로그인하러 가기"
+          className="bg-indigo-200 hover:bg-indigo-300 mt-4 text-black"
+          onClick={() => navigate("/auth/signin")}
         />
       </AuthInputSection>
     </>

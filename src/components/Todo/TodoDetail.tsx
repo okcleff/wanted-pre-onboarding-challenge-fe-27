@@ -42,6 +42,8 @@ const TodoDetail: React.FC<TodoDetailProps> = ({
 
   const handleDeleteTodo = () => {
     if (!selectedTodo) return;
+
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
     deleteTodo(selectedTodo.id);
     setSelectedTodo(null);
   };
@@ -58,12 +60,14 @@ const TodoDetail: React.FC<TodoDetailProps> = ({
                 name="title"
                 value={selectedTodo.title}
                 onChange={handleInputChange}
+                inputClassName="py-2"
               />
               <CommonInput
                 type="text"
                 name="content"
                 value={selectedTodo.content}
                 onChange={handleInputChange}
+                inputClassName="py-2"
               />
 
               <div className="flex justify-end gap-3 mt-5">
@@ -85,7 +89,7 @@ const TodoDetail: React.FC<TodoDetailProps> = ({
                 <CommonButton
                   type="button"
                   onClick={() => setEditMode(false)}
-                  className="bg-white text-black"
+                  className="bg-white text-black border border-white hover:bg-white hover:border-gray-400"
                   buttonText="취소"
                 />
               </div>

@@ -1,6 +1,9 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import CommonButton from "../components/common/CommonButton";
 
 const NotFoundPage = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       <div className="max-w-md w-full text-center space-y-6">
@@ -11,17 +14,15 @@ const NotFoundPage = () => {
             페이지를 찾을 수 없습니다
           </h2>
           <p className="text-gray-600">
-            요청하신 페이지가 삭제되었거나 잘못된 경로입니다. 홈으로 돌아가서
-            다시 시도해주세요.
+            요청하신 페이지가 삭제되었거나 잘못된 경로입니다.
           </p>
         </div>
 
-        <Link
-          to="/"
-          className="inline-block px-6 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
-        >
-          홈으로 돌아가기
-        </Link>
+        <CommonButton
+          type="button"
+          buttonText="뒤로가기"
+          onClick={() => navigate(-1)}
+        />
       </div>
     </div>
   );

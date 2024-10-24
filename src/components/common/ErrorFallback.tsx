@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 type ErrorFallbackProps = {
   error: {
     message: string;
-    response: {
+    response?: {
       status: number;
       data: {
         details: string;
@@ -28,7 +28,8 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
           페이지 로드 중 문제가 발생했습니다
         </h2>
         <pre className="text-sm bg-gray-100 p-4 rounded mb-4 overflow-auto">
-          {error.message} : {error.response.data.details}
+          {error.message}
+          {!!error.response && ` : ${error?.response?.data.details}`}
         </pre>
         <div className="space-x-4">
           <button

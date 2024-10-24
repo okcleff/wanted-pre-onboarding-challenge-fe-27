@@ -107,11 +107,11 @@ export const useUpdateTodo = (): UseMutationResult<
   return useMutation<UpdateTodoResponse, TodoError, TodoItem>({
     mutationFn: updateTodo,
     onSuccess: () => {
-      queryClient
-        .invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY })
-        .then(() => {
-          alert("할 일이 수정되었습니다.");
-        });
+      queryClient.invalidateQueries({
+        queryKey: TODO_LIST_FETCH_QUERY_KEY,
+      });
+
+      alert("할 일이 수정되었습니다.");
     },
     onError: (error) =>
       handleAuthError(

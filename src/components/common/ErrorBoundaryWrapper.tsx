@@ -3,9 +3,9 @@ import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./ErrorFallback";
 import Loading from "./Loading";
 
-interface ErrorBoundaryWrapperProps {
+type ErrorBoundaryWrapperProps = {
   children: React.ReactNode;
-}
+};
 
 const ErrorBoundaryWrapper: React.FC<ErrorBoundaryWrapperProps> = ({
   children,
