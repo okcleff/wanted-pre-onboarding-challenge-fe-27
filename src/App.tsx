@@ -7,7 +7,7 @@ import SignupPage from "./pages/SignupPage";
 import TodoPage from "./pages/TodoPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import AuthLayout from "./components/layout/AuthLayout";
-import ErrorBoundaryWrapper from "./components/common/ErrorBoundaryWrapper";
+import ErrorBoundaryWrapper from "./components/error/ErrorBoundaryWrapper";
 
 const queryClient = new QueryClient({
   defaultOptions: {

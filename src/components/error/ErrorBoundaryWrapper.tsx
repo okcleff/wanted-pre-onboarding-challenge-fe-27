@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./ErrorFallback";
-import Loading from "./Loading";
+import Loading from "../common/Loading";
 
 type ErrorBoundaryWrapperProps = {
   children: React.ReactNode;

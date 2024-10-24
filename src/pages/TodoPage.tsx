@@ -26,10 +26,11 @@ const TodoPage: React.FC = () => {
     if (id) {
       const todo = todos?.find((todo) => todo.id === id) || null;
       setSelectedTodo(todo);
+      setSearchParams(todo ? { id } : {});
     } else {
       setSelectedTodo(null);
     }
-  }, [searchParams, todos]);
+  }, [searchParams, todos, setSearchParams]);
 
   const handleSelectTodo = (todo: TodoItem | null) => {
     setSelectedTodo(todo);
@@ -54,7 +55,11 @@ const TodoPage: React.FC = () => {
       </section>
 
       <section className="grid grid-cols-2 gap-4">
-        <TodoList todos={todos || []} setSelectedTodo={handleSelectTodo} />
+        <TodoList
+          todos={todos || []}
+          selectedTodo={selectedTodo}
+          setSelectedTodo={handleSelectTodo}
+        />
 
         <TodoDetail
           selectedTodo={selectedTodo}
