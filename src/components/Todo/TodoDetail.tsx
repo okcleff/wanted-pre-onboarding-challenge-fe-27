@@ -6,7 +6,7 @@ import type { TodoItem } from "../../types/todo";
 
 type TodoDetailProps = {
   selectedTodo: TodoItem | null;
-  setSelectedTodo: React.Dispatch<React.SetStateAction<TodoItem | null>>;
+  setSelectedTodo: (todo: TodoItem | null) => void;
 };
 
 const TodoDetail: React.FC<TodoDetailProps> = ({
@@ -17,7 +17,7 @@ const TodoDetail: React.FC<TodoDetailProps> = ({
 
   useEffect(() => {
     setEditMode(false);
-  }, [selectedTodo]);
+  }, [selectedTodo?.id]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!selectedTodo) return;

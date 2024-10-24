@@ -2,10 +2,12 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import AuthPage from "./pages/AuthPage";
+import SigninPage from "./pages/SigninPage";
+import SignupPage from "./pages/SignupPage";
 import TodoPage from "./pages/TodoPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import AuthLayout from "./components/layouts/AuthLayout";
-import AuthMiddleware from "./components/middleware/AuthMiddleware";
+import ErrorBoundaryWrapper from "./components/common/ErrorBoundaryWrapper";
 
 const App: React.FC = () => {
   const queryClient = new QueryClient({
@@ -20,17 +22,33 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>
-        <Route path="/" element={<TodoPage />} />
         <Route
+          path="/"
           element={
-            <AuthMiddleware>
-              <AuthLayout />
-            </AuthMiddleware>
+            <ErrorBoundaryWrapper>
+              <TodoPage />
+            </ErrorBoundaryWrapper>
           }
-        >
-          <Route path="/auth/signup" element={<AuthPage />} />
-          <Route path="/auth/signin" element={<AuthPage />} />
+        />
+        <Route element={<AuthLayout />}>
+          <Route
+            path="/auth/signup"
+            element={
+              <ErrorBoundaryWrapper>
+                <SignupPage />
+              </ErrorBoundaryWrapper>
+            }
+          />
+          <Route
+            path="/auth/signin"
+            element={
+              <ErrorBoundaryWrapper>
+                <SigninPage />
+              </ErrorBoundaryWrapper>
+            }
+          />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

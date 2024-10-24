@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import {
-  useQuery,
+  useSuspenseQuery,
   useMutation,
   UseMutationResult,
   useQueryClient,
@@ -79,7 +79,7 @@ const getTodos = async () => {
 };
 
 export const useGetTodos = () => {
-  return useQuery<GetTodoResponse, TodoError>({
+  return useSuspenseQuery<GetTodoResponse, TodoError>({
     queryKey: TODO_LIST_FETCH_QUERY_KEY,
     queryFn: getTodos,
   });
@@ -107,8 +107,11 @@ export const useUpdateTodo = (): UseMutationResult<
   return useMutation<UpdateTodoResponse, TodoError, TodoItem>({
     mutationFn: updateTodo,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY });
-      alert("할 일이 수정되었습니다.");
+      queryClient
+        .invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY })
+        .then(() => {
+          alert("할 일이 수정되었습니다.");
+        });
     },
     onError: (error) =>
       handleAuthError(

@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { usePostSignup, usePostSignin } from "../queries/auth";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { usePostSignin } from "../queries/auth";
 import CommonInput from "../components/common/CommonInput";
 import CommonButton from "../components/common/CommonButton";
 import { emailRegex } from "../utils";
@@ -10,21 +10,20 @@ type SubmitData = {
   password: string;
 };
 
-type FormErrors = SubmitData;
-
-const MIN_PASSWORD_LENGTH = 8;
-
-const AuthPage = () => {
+const SigninPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const isSignup = location.pathname.includes("/signup");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) navigate("/");
+  }, [navigate]);
 
   const [submitData, setSubmitData] = useState<SubmitData>({
     email: "",
     password: "",
   });
 
-  const [errors, setErrors] = useState<FormErrors>({
+  const [errors, setErrors] = useState<SubmitData>({
     email: "",
     password: "",
   });
@@ -41,9 +40,6 @@ const AuthPage = () => {
         break;
       case "password":
         if (!value) return "비밀번호를 입력해주세요.";
-        if (value.length < MIN_PASSWORD_LENGTH) {
-          return "패스워드 길이는 8 이상이어야 합니다.";
-        }
         break;
       default:
         return "";
@@ -70,7 +66,7 @@ const AuthPage = () => {
   };
 
   const validateForm = (): boolean => {
-    const newErrors: FormErrors = {
+    const newErrors = {
       email: validateField("email", submitData.email),
       password: validateField("password", submitData.password),
     };
@@ -78,9 +74,6 @@ const AuthPage = () => {
     setErrors(newErrors);
     return !newErrors.email && !newErrors.password;
   };
-
-  const { mutate: postSignupMutation, isPending: isPostSignupPending } =
-    usePostSignup();
 
   const { mutate: postSigninMutation, isPending: isPostSigninPending } =
     usePostSignin();
@@ -90,9 +83,7 @@ const AuthPage = () => {
     setIsSubmitted(true);
 
     if (validateForm()) {
-      return isSignup
-        ? postSignupMutation(submitData)
-        : postSigninMutation(submitData);
+      postSigninMutation(submitData);
     }
   };
 
@@ -100,7 +91,7 @@ const AuthPage = () => {
     <>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          {isSignup ? "회원가입" : "로그인"}
+          로그인
         </h2>
       </div>
 
@@ -133,19 +124,17 @@ const AuthPage = () => {
 
             <CommonButton
               type="submit"
-              disabled={isPostSignupPending || isPostSigninPending}
-              buttonText={isSignup ? "가입하기" : "로그인"}
+              disabled={isPostSigninPending}
+              buttonText="로그인"
               className="mt-8"
             />
 
-            {!isSignup && (
-              <CommonButton
-                type="button"
-                buttonText="회원가입하기"
-                className="bg-indigo-300 hover:bg-indigo-400 mt-4"
-                onClick={() => navigate("/auth/signup")}
-              />
-            )}
+            <CommonButton
+              type="button"
+              buttonText="회원가입하기"
+              className="bg-indigo-300 hover:bg-indigo-400 mt-4"
+              onClick={() => navigate("/auth/signup")}
+            />
           </form>
         </div>
       </div>
@@ -153,4 +142,4 @@ const AuthPage = () => {
   );
 };
 
-export default AuthPage;
+export default SigninPage;
