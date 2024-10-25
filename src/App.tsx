@@ -7,6 +7,7 @@ import SignupPage from "./pages/SignupPage";
 import TodoPage from "./pages/TodoPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import AuthLayout from "./components/layout/AuthLayout";
+import TodoLayout from "./components/layout/TodoLayout";
 import ErrorBoundaryWrapper from "./components/error/ErrorBoundaryWrapper";
 
 const queryClient = new QueryClient({
@@ -34,16 +35,18 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <ErrorBoundaryWrapper>
-              <PrivateRoute>
-                <TodoPage />
-              </PrivateRoute>
-            </ErrorBoundaryWrapper>
-          }
-        />
+        <Route element={<TodoLayout />}>
+          <Route
+            path="/"
+            element={
+              <ErrorBoundaryWrapper>
+                <PrivateRoute>
+                  <TodoPage />
+                </PrivateRoute>
+              </ErrorBoundaryWrapper>
+            }
+          />
+        </Route>
 
         <Route element={<AuthLayout />}>
           <Route

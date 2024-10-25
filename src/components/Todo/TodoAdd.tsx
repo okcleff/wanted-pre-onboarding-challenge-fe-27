@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import CommonInput from "../common/CommonInput";
+import CommonButton from "../common/CommonButton";
 import { usePostNewTodo } from "../../queries/todo";
 
 const TodoAdd = () => {
@@ -53,13 +54,11 @@ const TodoAdd = () => {
         />
       </div>
       <div className="flex items-center justify-end">
-        <button
+        <CommonButton
           type="submit"
           disabled={!newTodo.title || !newTodo.content || isPostNewTodoPending}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
-        >
-          {isPostNewTodoPending ? "추가 중..." : "추가"}
-        </button>
+          buttonText={isPostNewTodoPending ? "추가 중..." : "추가"}
+        />
       </div>
     </form>
   );

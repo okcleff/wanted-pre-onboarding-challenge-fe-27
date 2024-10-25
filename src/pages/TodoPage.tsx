@@ -1,24 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import TodoAdd from "../components/todo/TodoAdd";
 import TodoList from "../components/todo/TodoList";
 import TodoDetail from "../components/todo/TodoDetail";
 import { useGetTodos } from "../queries/todo";
 import type { TodoItem } from "../types/todo";
-import CommonButton from "../components/common/CommonButton";
 
 const TodoPage: React.FC = () => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/auth/signin");
-  };
-
-  const [searchParams, setSearchParams] = useSearchParams();
-
   const { data: todos } = useGetTodos();
 
+  // 선택한 할 일을 URL 파라미터로 관리, 새로고침시 선택한 할 일 유지
+  const [searchParams, setSearchParams] = useSearchParams();
   const [selectedTodo, setSelectedTodo] = useState<TodoItem | null>(null);
 
   useEffect(() => {
@@ -30,7 +22,7 @@ const TodoPage: React.FC = () => {
     } else {
       setSelectedTodo(null);
     }
-  }, [searchParams, todos, setSearchParams]);
+  }, [todos, searchParams, setSearchParams]);
 
   const handleSelectTodo = (todo: TodoItem | null) => {
     setSelectedTodo(todo);
@@ -38,16 +30,7 @@ const TodoPage: React.FC = () => {
   };
 
   return (
-    <div className="p-8">
-      <div className="flex justify-end">
-        <CommonButton
-          type="button"
-          buttonText="로그아웃"
-          onClick={handleLogout}
-          className="w-20"
-        />
-      </div>
-
+    <>
       <h1 className="text-3xl font-bold mb-6">Todo List</h1>
 
       <section className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -55,18 +38,26 @@ const TodoPage: React.FC = () => {
       </section>
 
       <section className="grid grid-cols-2 gap-4">
-        <TodoList
-          todos={todos || []}
-          selectedTodo={selectedTodo}
-          setSelectedTodo={handleSelectTodo}
-        />
+        <div>
+          <h2 className="text-xl font-semibold mb-2">할 일 목록</h2>
+          <TodoList
+            todos={todos || []}
+            selectedTodo={selectedTodo}
+            setSelectedTodo={handleSelectTodo}
+          />
+        </div>
 
-        <TodoDetail
-          selectedTodo={selectedTodo}
-          setSelectedTodo={handleSelectTodo}
-        />
+        <div>
+          <h2 className="text-xl font-semibold mb-2">상세 정보</h2>
+          {selectedTodo && (
+            <TodoDetail
+              selectedTodo={selectedTodo}
+              setSelectedTodo={handleSelectTodo}
+            />
+          )}
+        </div>
       </section>
-    </div>
+    </>
   );
 };
 

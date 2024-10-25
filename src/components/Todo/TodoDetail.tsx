@@ -5,7 +5,7 @@ import { useUpdateTodo, useDeleteTodo } from "../../queries/todo";
 import type { TodoItem } from "../../types/todo";
 
 type TodoDetailProps = {
-  selectedTodo: TodoItem | null;
+  selectedTodo: TodoItem;
   setSelectedTodo: (todo: TodoItem | null) => void;
 };
 
@@ -15,105 +15,109 @@ const TodoDetail: React.FC<TodoDetailProps> = ({
 }) => {
   const [editMode, setEditMode] = useState(false);
 
-  useEffect(() => {
-    setEditMode(false);
-  }, [selectedTodo?.id]);
+  // 할 일 입력값 변경 (수정 취소 했을 때 원래 값으로 되돌리기 위해 selectedTodo의 복사본 사용)
+  const [editedTodo, setEditedTodo] = useState({ ...selectedTodo });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!selectedTodo) return;
     const { name, value } = e.target;
-
-    setSelectedTodo({
-      ...selectedTodo,
+    setEditedTodo({
+      ...editedTodo,
       [name]: value,
     });
   };
 
+  // 선택한 할 일이 바뀌면 수정 모드를 끔
+  useEffect(() => {
+    setEditMode(false);
+    setEditedTodo({ ...selectedTodo });
+  }, [selectedTodo]);
+
+  // 할 일 수정
   const { mutate: updateTodo, isPending: isUpdatedTodoPending } =
     useUpdateTodo();
 
-  const handleUpdateTodo = () => {
-    if (!selectedTodo) return;
-    updateTodo(selectedTodo);
+  const handleUpdateTodo = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    updateTodo(editedTodo);
     setEditMode(false);
   };
 
+  // 할 일 삭제
   const { mutate: deleteTodo } = useDeleteTodo();
 
   const handleDeleteTodo = () => {
-    if (!selectedTodo) return;
-
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
     deleteTodo(selectedTodo.id);
     setSelectedTodo(null);
   };
 
+  // 취소 버튼 클릭
+  const handleCancelEdit = () => {
+    setEditMode(false);
+    setEditedTodo({ ...selectedTodo });
+  };
+
   return (
-    <div>
-      <h2 className="text-xl font-semibold mb-2">상세 정보</h2>
-      {selectedTodo && (
-        <div className="border p-4 rounded">
-          {editMode ? (
-            <form onSubmit={handleUpdateTodo}>
-              <CommonInput
-                type="text"
-                name="title"
-                value={selectedTodo.title}
-                onChange={handleInputChange}
-                inputClassName="py-2"
+    <>
+      <div className="border p-4 rounded">
+        {editMode ? (
+          <form onSubmit={handleUpdateTodo}>
+            <CommonInput
+              type="text"
+              name="title"
+              value={editedTodo.title}
+              onChange={handleInputChange}
+              inputClassName="py-2"
+            />
+            <CommonInput
+              type="text"
+              name="content"
+              value={editedTodo.content}
+              onChange={handleInputChange}
+              inputClassName="py-2"
+            />
+
+            <div className="flex justify-end gap-3 mt-5">
+              <CommonButton
+                type="submit"
+                buttonText="저장"
+                disabled={
+                  !editedTodo.title ||
+                  !editedTodo.content ||
+                  isUpdatedTodoPending
+                }
               />
-              <CommonInput
-                type="text"
-                name="content"
-                value={selectedTodo.content}
-                onChange={handleInputChange}
-                inputClassName="py-2"
+              <CommonButton
+                type="button"
+                onClick={handleDeleteTodo}
+                className="bg-red-500 hover:bg-red-600"
+                buttonText="삭제"
               />
-
-              <div className="flex justify-end gap-3 mt-5">
-                <CommonButton
-                  type="submit"
-                  buttonText="저장"
-                  disabled={
-                    !selectedTodo.title ||
-                    !selectedTodo.content ||
-                    isUpdatedTodoPending
-                  }
-                />
-                <CommonButton
-                  type="button"
-                  onClick={handleDeleteTodo}
-                  className="bg-red-500 hover:bg-red-600"
-                  buttonText="삭제"
-                />
-                <CommonButton
-                  type="button"
-                  onClick={() => setEditMode(false)}
-                  className="bg-white text-black border border-white hover:bg-white hover:border-gray-400"
-                  buttonText="취소"
-                />
-              </div>
-            </form>
-          ) : (
-            <div>
-              <h3 className="text-lg font-semibold mb-2">
-                {selectedTodo.title}
-              </h3>
-
-              <p>{selectedTodo.content}</p>
-
-              <div className="flex justify-end gap-3 mt-5">
-                <CommonButton
-                  type="button"
-                  onClick={() => setEditMode(true)}
-                  buttonText="수정"
-                />
-              </div>
+              <CommonButton
+                type="button"
+                onClick={handleCancelEdit}
+                className="bg-white text-black border border-white hover:bg-white hover:border-gray-400"
+                buttonText="취소"
+              />
             </div>
-          )}
-        </div>
-      )}
-    </div>
+          </form>
+        ) : (
+          <div>
+            <h3 className="text-lg font-semibold mb-2">{selectedTodo.title}</h3>
+
+            <p>{selectedTodo.content}</p>
+
+            <div className="flex justify-end gap-3 mt-5">
+              <CommonButton
+                type="button"
+                onClick={() => setEditMode(true)}
+                buttonText="수정"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 export default TodoDetail;
