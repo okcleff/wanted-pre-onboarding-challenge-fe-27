@@ -33,13 +33,15 @@ const handleAuthError = (
   callbackFn: () => void,
   customErrorMessage: string = "에러가 발생했습니다. 잠시 후 다시 시도해주세요."
 ) => {
+  console.error("ERROR", error);
+
   // validateToken 함수에서 토큰이 없을 때 401 에러를 반환하도록 했으므로
-  if (error.response.status === 401) {
+  if (error.response?.status === 401) {
     alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
     return callbackFn();
   }
 
-  alert(error.response.data.details || customErrorMessage);
+  alert(error.response?.data.details || customErrorMessage);
 };
 
 // ---------- 새 할 일 추가 ----------

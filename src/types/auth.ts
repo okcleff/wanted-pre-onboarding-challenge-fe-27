@@ -9,7 +9,9 @@ export type AuthResponse = {
 };
 
 export type AuthError = {
-  response: {
+  code: string;
+  message: string;
+  response?: {
     data: {
       details: string;
     };

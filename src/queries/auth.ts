@@ -27,8 +27,10 @@ export const usePostSignup = (): UseMutationResult<
       navigate("/");
     },
     onError: (error) => {
+      console.error("ERROR", error);
+
       alert(
-        error.response.data.details ||
+        error.response?.data.details ||
           "회원가입에 실패했습니다. 잠시 후 다시 시도해주세요."
       );
     },
@@ -61,9 +63,11 @@ export const usePostSignin = (): UseMutationResult<
       navigate("/");
     },
     onError: (error) => {
-      alert(
-        error.response.data.details ||
-          "로그인에 실패했습니다. 잠시 후 다시 시도해주세요."
+      console.error("ERROR", error);
+
+      return alert(
+        error.response?.data.details ||
+          `로그인에 실패했습니다. 잠시 후 다시 시도해주세요.`
       );
     },
   });

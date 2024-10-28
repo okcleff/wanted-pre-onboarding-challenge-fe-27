@@ -17,7 +17,9 @@ export type CreateTodoResponse = TodoItem;
 export type UpdateTodoResponse = TodoItem;
 
 export type TodoError = {
-  response: {
+  code: string;
+  message: string;
+  response?: {
     status: number;
     data: {
       details: string;

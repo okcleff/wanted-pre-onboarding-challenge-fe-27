@@ -6,12 +6,12 @@ import type { TodoItem } from "../../types/todo";
 
 type TodoDetailProps = {
   selectedTodo: TodoItem;
-  setSelectedTodo: (todo: TodoItem | null) => void;
+  handleSelectTodo: (todo: TodoItem | null) => void;
 };
 
 const TodoDetail: React.FC<TodoDetailProps> = ({
   selectedTodo,
-  setSelectedTodo,
+  handleSelectTodo,
 }) => {
   const [editMode, setEditMode] = useState(false);
 
@@ -48,7 +48,7 @@ const TodoDetail: React.FC<TodoDetailProps> = ({
   const handleDeleteTodo = () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
     deleteTodo(selectedTodo.id);
-    setSelectedTodo(null);
+    handleSelectTodo(null);
   };
 
   // 취소 버튼 클릭

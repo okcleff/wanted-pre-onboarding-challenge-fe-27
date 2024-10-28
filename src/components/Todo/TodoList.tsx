@@ -4,13 +4,13 @@ import type { TodoItem } from "../../types/todo";
 type TodoListProps = {
   todos: TodoItem[];
   selectedTodo: TodoItem | null;
-  setSelectedTodo: (todo: TodoItem) => void;
+  handleSelectTodo: (todo: TodoItem) => void;
 };
 
 const TodoList: React.FC<TodoListProps> = ({
   todos,
   selectedTodo,
-  setSelectedTodo,
+  handleSelectTodo,
 }) => {
   return (
     <>
@@ -25,7 +25,7 @@ const TodoList: React.FC<TodoListProps> = ({
                 className={`flex items-center justify-between p-2 border-b cursor-pointer hover:bg-gray-100 ${
                   todo.id === selectedTodo?.id ? "bg-gray-100" : ""
                 }`}
-                onClick={() => setSelectedTodo(todo)}
+                onClick={() => handleSelectTodo(todo)}
               >
                 {todo.title}
               </li>
