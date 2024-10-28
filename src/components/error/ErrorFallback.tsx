@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import CommonButton from "../common/CommonButton";
 
 type ErrorFallbackProps = {
   error: {
@@ -31,19 +32,20 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
           {error.message}
           {!!error.response && ` : ${error?.response?.data.details}`}
         </pre>
-        <div className="space-x-4">
-          <button
+        <div className="flex justify-between gap-3">
+          <CommonButton
+            type="button"
             onClick={handleReset}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            홈으로 이동
-          </button>
-          <button
+            className="bg-blue-500 hover:bg-blue-600"
+            buttonText="홈으로 이동"
+          />
+
+          <CommonButton
+            type="button"
             onClick={resetErrorBoundary}
-            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-          >
-            다시 시도
-          </button>
+            className="bg-gray-500 hover:bg-gray-600"
+            buttonText="다시 시도"
+          />
         </div>
       </div>
     </div>

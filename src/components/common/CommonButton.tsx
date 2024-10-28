@@ -11,7 +11,7 @@ const CommonButton: React.FC<CommonButtonProps> = ({
   ...props
 }) => {
   const mergedClassName = twMerge(
-    `w-full py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 transition-colors`,
+    `w-full py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 transition-colors rounded`,
     className
   );
 
