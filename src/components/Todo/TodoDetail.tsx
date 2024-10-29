@@ -67,6 +67,7 @@ const TodoDetail = () => {
               name="title"
               value={editedTodo.title}
               onChange={handleInputChange}
+              labelText="제목"
               inputClassName="py-2"
             />
             <CommonInput
@@ -74,6 +75,7 @@ const TodoDetail = () => {
               name="content"
               value={editedTodo.content}
               onChange={handleInputChange}
+              labelText="내용"
               inputClassName="py-2"
             />
 
