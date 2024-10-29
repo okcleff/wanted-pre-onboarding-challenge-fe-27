@@ -1,7 +1,6 @@
 import {
   useSuspenseQuery,
   useMutation,
-  UseMutationResult,
   useQueryClient,
 } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
@@ -27,11 +26,11 @@ const TODO_LIST_FETCH_QUERY_KEY = ["todos"];
  * - 401 에러일 경우 로그인 필요 메시지를 표시하고 로그인 페이지로 이동합니다.
  * - 그 외의 경우 서버에서 받은 에러 메시지나 커스텀 에러 메시지를 표시합니다.
  */
-const handleAuthError = (
+const handleTodoError = (
   error: TodoError,
   customErrorMessage: string = "에러가 발생했습니다. 잠시 후 다시 시도해주세요."
 ) => {
-  console.error("ERROR", error);
+  console.error("todo.ts - ERROR", error);
 
   // validateToken 함수에서 토큰이 없을 때 401 에러를 반환하도록 했으므로
   if (error.response?.status === 401) {
@@ -48,11 +47,7 @@ const postNewTodo = async (todo: NewTodo) => {
   return response.data;
 };
 
-export const usePostNewTodo = (): UseMutationResult<
-  CreateTodoResponse,
-  TodoError,
-  NewTodo
-> => {
+export const usePostNewTodo = () => {
   const queryClient = useQueryClient();
   const [, setSearchParams] = useSearchParams();
 
@@ -63,7 +58,7 @@ export const usePostNewTodo = (): UseMutationResult<
       setSearchParams({ id: response.data.id });
     },
     onError: (error) =>
-      handleAuthError(error, "할 일을 추가하는데 실패했습니다."),
+      handleTodoError(error, "할 일을 추가하는데 실패했습니다."),
   });
 };
 // ---------- 새 할 일 추가 ----------
@@ -97,8 +92,7 @@ export const useGetTodoById = (id: string) => {
 // ---------- ID로 할 일 조회 ----------
 
 // ---------- 할 일 수정 ----------
-const updateTodo = async (updatedTodo: TodoItem) => {
-  const { id, title, content } = updatedTodo;
+const updateTodo = async ({ id, title, content }: TodoItem) => {
   const response = await axiosAuthInstance.put(`/todos/${id}`, {
     title: title,
     content: content,
@@ -106,11 +100,7 @@ const updateTodo = async (updatedTodo: TodoItem) => {
   return response.data;
 };
 
-export const useUpdateTodo = (): UseMutationResult<
-  UpdateTodoResponse,
-  TodoError,
-  TodoItem
-> => {
+export const useUpdateTodo = () => {
   const queryClient = useQueryClient();
 
   return useMutation<UpdateTodoResponse, TodoError, TodoItem>({
@@ -124,7 +114,7 @@ export const useUpdateTodo = (): UseMutationResult<
       });
     },
     onError: (error) =>
-      handleAuthError(error, "할 일을 수정하는데 실패했습니다."),
+      handleTodoError(error, "할 일을 수정하는데 실패했습니다."),
   });
 };
 // ---------- 할 일 수정 ----------
@@ -135,11 +125,7 @@ const deleteTodo = async (id: string) => {
   return response.data;
 };
 
-export const useDeleteTodo = (): UseMutationResult<
-  UpdateTodoResponse,
-  TodoError,
-  string
-> => {
+export const useDeleteTodo = () => {
   const queryClient = useQueryClient();
 
   return useMutation<UpdateTodoResponse, TodoError, string>({
@@ -148,7 +134,7 @@ export const useDeleteTodo = (): UseMutationResult<
       queryClient.invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY });
     },
     onError: (error) =>
-      handleAuthError(error, "할 일을 삭제하는데 실패했습니다."),
+      handleTodoError(error, "할 일을 삭제하는데 실패했습니다."),
   });
 };
 // ---------- 할 일 삭제 ----------

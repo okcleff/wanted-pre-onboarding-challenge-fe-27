@@ -1,7 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { axiosInstance } from "./axiosInstance";
 import type { AuthFormData, AuthResponse, AuthError } from "../types/auth";
+
+const handleAuthError = (
+  error: AuthError,
+  customErrorMessage: string = "에러가 발생했습니다. 잠시 후 다시 시도해주세요."
+) => {
+  console.error("auth.ts - Error", error);
+
+  alert(error.response?.data.details || customErrorMessage);
+};
 
 // ---------- 회원가입 ----------
 const postSignup = async (signupForm: AuthFormData): Promise<AuthResponse> => {
@@ -12,11 +21,7 @@ const postSignup = async (signupForm: AuthFormData): Promise<AuthResponse> => {
   return response.data;
 };
 
-export const usePostSignup = (): UseMutationResult<
-  AuthResponse,
-  AuthError,
-  AuthFormData
-> => {
+export const usePostSignup = () => {
   const navigate = useNavigate();
 
   return useMutation<AuthResponse, AuthError, AuthFormData>({
@@ -27,11 +32,9 @@ export const usePostSignup = (): UseMutationResult<
       navigate("/");
     },
     onError: (error) => {
-      console.error("ERROR", error);
-
-      alert(
-        error.response?.data.details ||
-          "회원가입에 실패했습니다. 잠시 후 다시 시도해주세요."
+      handleAuthError(
+        error,
+        "회원가입에 실패했습니다. 잠시 후 다시 시도해주세요."
       );
     },
   });
@@ -49,11 +52,7 @@ export const postSignin = async (
   return response.data;
 };
 
-export const usePostSignin = (): UseMutationResult<
-  AuthResponse,
-  AuthError,
-  AuthFormData
-> => {
+export const usePostSignin = () => {
   const navigate = useNavigate();
 
   return useMutation<AuthResponse, AuthError, AuthFormData>({
@@ -63,11 +62,9 @@ export const usePostSignin = (): UseMutationResult<
       navigate("/");
     },
     onError: (error) => {
-      console.error("ERROR", error);
-
-      return alert(
-        error.response?.data.details ||
-          `로그인에 실패했습니다. 잠시 후 다시 시도해주세요.`
+      handleAuthError(
+        error,
+        "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요."
       );
     },
   });
