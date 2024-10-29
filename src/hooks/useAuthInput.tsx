@@ -24,8 +24,6 @@ const useAuthInput = () => {
       password: "",
     });
 
-    const [isSubmitted, setIsSubmitted] = useState(false);
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
 
@@ -34,14 +32,11 @@ const useAuthInput = () => {
         [name]: value,
       }));
 
-      // 제출 버튼을 누른 이후에는 매 입력마다 유효성 검사
-      if (isSubmitted) {
-        const error = validateField(name, value);
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [name]: error,
-        }));
-      }
+      const error = validateField(name, value);
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: error,
+      }));
     };
 
     const validateForm = (): boolean => {
@@ -56,7 +51,6 @@ const useAuthInput = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      setIsSubmitted(true);
 
       if (validateForm()) {
         submitFunc(submitData);
@@ -108,6 +102,7 @@ const useAuthInput = () => {
           value={submitData.password}
           onChange={handleInputChange}
           errorMessage={errors.password}
+          wrapperClassName="mt-6"
           inputClassName="h-10"
         />
 
@@ -115,7 +110,7 @@ const useAuthInput = () => {
           type="submit"
           disabled={isPending}
           buttonText={buttonText}
-          className="mt-8"
+          className="mt-12"
         />
       </form>
     );

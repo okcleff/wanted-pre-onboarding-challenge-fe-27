@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 
 type CommonInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   labelText?: string;
+  wrapperClassName?: string;
   labelClassName?: string;
   inputClassName?: string;
   errorMessage?: string;
@@ -11,11 +12,14 @@ type CommonInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 const CommonInput: React.FC<CommonInputProps> = ({
   id,
   labelText,
+  wrapperClassName = "",
   labelClassName = "",
   inputClassName = "",
   errorMessage = "",
   ...props
 }) => {
+  const mergedWrapperClassName = twMerge(`relative mt-2`, wrapperClassName);
+
   const mergedLabelClassName = twMerge(
     `text-sm font-medium text-gray-700`,
     labelClassName
@@ -27,7 +31,7 @@ const CommonInput: React.FC<CommonInputProps> = ({
   );
 
   return (
-    <div className="mt-2">
+    <div className={mergedWrapperClassName}>
       {labelText && (
         <label htmlFor={id} className={mergedLabelClassName}>
           {labelText}
@@ -37,7 +41,7 @@ const CommonInput: React.FC<CommonInputProps> = ({
       <div className={labelText ? "mt-1" : ""}>
         <input id={id} className={mergedInputClassName} {...props} />
         {errorMessage && (
-          <p className="mt-1 text-sm text-red-600">{errorMessage}</p>
+          <p className="absolute mt-1 text-xs text-red-600">{errorMessage}</p>
         )}
       </div>
     </div>

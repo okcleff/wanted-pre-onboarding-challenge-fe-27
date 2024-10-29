@@ -27,7 +27,11 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   return isAuthenticated() ? children : <Navigate to="/auth/signin" replace />;
 };
 
-const PublicRoute = ({ children }: { children: React.ReactNode }) => {
+const RedirectIfAuthenticated = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   return !isAuthenticated() ? children : <Navigate to="/" replace />;
 };
 
@@ -60,9 +64,9 @@ const App: React.FC = () => {
             path="/auth/signin"
             element={
               <ErrorBoundaryWrapper>
-                <PublicRoute>
+                <RedirectIfAuthenticated>
                   <SigninPage />
-                </PublicRoute>
+                </RedirectIfAuthenticated>
               </ErrorBoundaryWrapper>
             }
           />
