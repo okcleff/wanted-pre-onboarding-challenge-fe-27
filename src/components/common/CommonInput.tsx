@@ -27,14 +27,14 @@ const CommonInput: React.FC<CommonInputProps> = ({
   );
 
   return (
-    <div className="pt-2">
+    <div className="mt-2">
       {labelText && (
         <label htmlFor={id} className={mergedLabelClassName}>
           {labelText}
         </label>
       )}
 
-      <div className="mt-1">
+      <div className={labelText ? "mt-1" : ""}>
         <input id={id} className={mergedInputClassName} {...props} />
         {errorMessage && (
           <p className="mt-1 text-sm text-red-600">{errorMessage}</p>

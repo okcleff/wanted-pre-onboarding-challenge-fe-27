@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import CommonInput from "../common/CommonInput";
 import CommonButton from "../common/CommonButton";
-import { useUpdateTodo, useDeleteTodo } from "../../queries/todo";
-import type { TodoItem } from "../../types/todo";
+import {
+  useGetTodoById,
+  useUpdateTodo,
+  useDeleteTodo,
+} from "../../queries/todo";
 
-type TodoDetailProps = {
-  selectedTodo: TodoItem;
-  handleSelectTodo: (todo: TodoItem | null) => void;
-};
+const TodoDetail = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedTodoId = searchParams.get("id") || "";
+  const { data: selectedTodo } = useGetTodoById(selectedTodoId);
 
-const TodoDetail: React.FC<TodoDetailProps> = ({
-  selectedTodo,
-  handleSelectTodo,
-}) => {
   const [editMode, setEditMode] = useState(false);
 
   // 할 일 입력값 변경 (수정 취소 했을 때 원래 값으로 되돌리기 위해 selectedTodo의 복사본 사용)
@@ -48,7 +48,7 @@ const TodoDetail: React.FC<TodoDetailProps> = ({
   const handleDeleteTodo = () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
     deleteTodo(selectedTodo.id);
-    handleSelectTodo(null);
+    setSearchParams({});
   };
 
   // 취소 버튼 클릭

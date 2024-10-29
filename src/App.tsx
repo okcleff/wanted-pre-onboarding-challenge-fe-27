@@ -39,11 +39,9 @@ const App: React.FC = () => {
           <Route
             path="/"
             element={
-              <ErrorBoundaryWrapper>
-                <PrivateRoute>
-                  <TodoPage />
-                </PrivateRoute>
-              </ErrorBoundaryWrapper>
+              <PrivateRoute>
+                <TodoPage />
+              </PrivateRoute>
             }
           />
         </Route>

@@ -13,8 +13,8 @@ export type TodoItem = {
 
 export type GetTodoResponse = TodoItem[];
 
-export type CreateTodoResponse = TodoItem;
-export type UpdateTodoResponse = TodoItem;
+export type CreateTodoResponse = { data: TodoItem };
+export type UpdateTodoResponse = { data: TodoItem };
 
 export type TodoError = {
   code: string;
