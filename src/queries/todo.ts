@@ -4,6 +4,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { axiosAuthInstance } from "./axiosInstance";
 import type {
   NewTodo,
@@ -34,11 +35,11 @@ const handleTodoError = (
 
   // validateToken 함수에서 토큰이 없을 때 401 에러를 반환하도록 했으므로
   if (error.response?.status === 401) {
-    alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+    toast.error("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
     window.location.href = "/auth/signin";
   }
 
-  alert(error.response?.data.details || customErrorMessage);
+  toast.error(error.response?.data.details || customErrorMessage);
 };
 
 // ---------- 새 할 일 추가 ----------
@@ -56,6 +57,7 @@ export const usePostNewTodo = () => {
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY });
       setSearchParams({ id: response.data.id });
+      toast.success("할 일이 추가되었습니다.");
     },
     onError: (error) =>
       handleTodoError(error, "할 일을 추가하는데 실패했습니다."),
@@ -112,6 +114,7 @@ export const useUpdateTodo = () => {
       queryClient.invalidateQueries({
         queryKey: ["todo", response.data.id],
       });
+      toast.success("할 일이 수정되었습니다.");
     },
     onError: (error) =>
       handleTodoError(error, "할 일을 수정하는데 실패했습니다."),
@@ -132,6 +135,7 @@ export const useDeleteTodo = () => {
     mutationFn: deleteTodo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY });
+      toast.success("할 일이 삭제되었습니다.");
     },
     onError: (error) =>
       handleTodoError(error, "할 일을 삭제하는데 실패했습니다."),

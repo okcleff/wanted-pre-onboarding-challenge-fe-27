@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 import { axiosInstance } from "./axiosInstance";
 import type { AuthFormData, AuthResponse, AuthError } from "../types/auth";
 
@@ -9,7 +10,7 @@ const handleAuthError = (
 ) => {
   console.error("auth.ts - Error", error);
 
-  alert(error.response?.data.details || customErrorMessage);
+  toast.error(error.response?.data.details || customErrorMessage);
 };
 
 // ---------- 회원가입 ----------
@@ -28,7 +29,7 @@ export const usePostSignup = () => {
     mutationFn: postSignup,
     onSuccess: (res) => {
       localStorage.setItem("token", res.token);
-      alert("회원가입이 완료되었습니다.");
+      toast.success("회원가입이 완료되었습니다.");
       navigate("/");
     },
     onError: (error) => {
@@ -59,6 +60,7 @@ export const usePostSignin = () => {
     mutationFn: postSignin,
     onSuccess: (res) => {
       localStorage.setItem("token", res.token);
+      toast.success("로그인 되었습니다.");
       navigate("/");
     },
     onError: (error) => {

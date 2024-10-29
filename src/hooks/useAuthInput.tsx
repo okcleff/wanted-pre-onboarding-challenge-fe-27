@@ -24,6 +24,26 @@ const useAuthInput = () => {
       password: "",
     });
 
+    const validateField = (name: string, value: string): string => {
+      switch (name) {
+        case "email":
+          if (!value) return "이메일을 입력해주세요.";
+          if (!emailRegex.test(value)) {
+            return "이메일 형식에 맞게 입력해주세요.";
+          }
+          break;
+        case "password":
+          if (!value) return "비밀번호를 입력해주세요.";
+          if (value.length < MIN_PASSWORD_LENGTH) {
+            return `패스워드 길이는 ${MIN_PASSWORD_LENGTH} 이상이어야 합니다.`;
+          }
+          break;
+        default:
+          return "";
+      }
+      return "";
+    };
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
 
@@ -55,26 +75,6 @@ const useAuthInput = () => {
       if (validateForm()) {
         submitFunc(submitData);
       }
-    };
-
-    const validateField = (name: string, value: string): string => {
-      switch (name) {
-        case "email":
-          if (!value) return "이메일을 입력해주세요.";
-          if (!emailRegex.test(value)) {
-            return "이메일 형식에 맞게 입력해주세요.";
-          }
-          break;
-        case "password":
-          if (!value) return "비밀번호를 입력해주세요.";
-          if (value.length < MIN_PASSWORD_LENGTH) {
-            return "패스워드 길이는 8 이상이어야 합니다.";
-          }
-          break;
-        default:
-          return "";
-      }
-      return "";
     };
 
     return (
