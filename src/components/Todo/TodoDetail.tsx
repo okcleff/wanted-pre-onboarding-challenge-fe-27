@@ -9,7 +9,7 @@ import {
 } from "../../queries/todo";
 
 const TodoDetail = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const selectedTodoId = searchParams.get("id") || "";
   const { data: selectedTodo } = useGetTodoById(selectedTodoId);
 
@@ -49,9 +49,7 @@ const TodoDetail = () => {
 
   const handleDeleteTodo = () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
-    deleteTodo(selectedTodo.id, {
-      onSuccess: () => setSearchParams({}),
-    });
+    deleteTodo(selectedTodo.id);
   };
 
   // 취소 버튼 클릭
