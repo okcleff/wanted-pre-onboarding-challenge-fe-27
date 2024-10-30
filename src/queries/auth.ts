@@ -1,17 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { axiosInstance } from "./axiosInstance";
+import { apiRequest } from "./axiosInstance";
 import { handleAPIError } from "../utils";
 import type { AuthFormData, AuthResponse, ErrorResponse } from "../types/auth";
 
 // ---------- 회원가입 ----------
 const postSignup = async (signupForm: AuthFormData): Promise<AuthResponse> => {
-  const response = await axiosInstance.post<AuthResponse>(
+  return apiRequest.post<AuthResponse, AuthFormData>(
     "/users/create",
     signupForm
   );
-  return response.data;
 };
 
 export const usePostSignup = () => {
@@ -38,11 +37,10 @@ export const usePostSignup = () => {
 export const postSignin = async (
   signinForm: AuthFormData
 ): Promise<AuthResponse> => {
-  const response = await axiosInstance.post<AuthResponse>(
-    "/users/login",
+  return apiRequest.post<AuthResponse, AuthFormData>(
+    "/users/signin",
     signinForm
   );
-  return response.data;
 };
 
 export const usePostSignin = () => {

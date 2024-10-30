@@ -35,13 +35,14 @@
 
 ## 사용한 기술
 
-- React, React Router, Tanstack Query, Tailwind CSS, React Error Boundary 등
+- react, react-router-dom, tanstack/react-query, tailwindcss, react-error-boundary 등
 
 ## 코드 구조
 
 ```plaintext
 src/
 ├── components/           # 컴포넌트 모음
+├── constants             # 상수 모음
 ├── hooks/                # 커스텀 훅
 ├── pages/                # 페이지 컴포넌트
 ├── queries/              # API 호출 관련
