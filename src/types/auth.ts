@@ -18,9 +18,3 @@ export interface ErrorResponse {
     };
   };
 }
-
-export interface AuthInputProps {
-  submitFunc: (data: AuthFormData) => void;
-  buttonText: string;
-  isPending: boolean;
-}

@@ -38,17 +38,20 @@ const TodoDetail = () => {
 
   const handleUpdateTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    updateTodo(editedTodo);
-    setEditMode(false);
+    updateTodo(editedTodo, {
+      onSuccess: () => setEditMode(false),
+    });
   };
 
   // 할 일 삭제
-  const { mutate: deleteTodo } = useDeleteTodo();
+  const { mutate: deleteTodo, isPending: isDeleteTodoPending } =
+    useDeleteTodo();
 
   const handleDeleteTodo = () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
-    deleteTodo(selectedTodo.id);
-    setSearchParams({});
+    deleteTodo(selectedTodo.id, {
+      onSuccess: () => setSearchParams({}),
+    });
   };
 
   // 취소 버튼 클릭
@@ -94,6 +97,7 @@ const TodoDetail = () => {
                 onClick={handleDeleteTodo}
                 className="bg-red-500 hover:bg-red-600"
                 buttonText="삭제"
+                disabled={isDeleteTodoPending}
               />
               <CommonButton
                 type="button"

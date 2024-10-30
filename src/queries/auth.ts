@@ -38,7 +38,7 @@ export const postSignin = async (
   signinForm: AuthFormData
 ): Promise<AuthResponse> => {
   return apiRequest.post<AuthResponse, AuthFormData>(
-    "/users/signin",
+    "/users/login",
     signinForm
   );
 };

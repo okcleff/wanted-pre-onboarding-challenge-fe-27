@@ -73,7 +73,7 @@ const App: React.FC = () => {
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
 
-      <ToastContainer autoClose={3000} theme="colored" />
+      <ToastContainer autoClose={2000} theme="colored" />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

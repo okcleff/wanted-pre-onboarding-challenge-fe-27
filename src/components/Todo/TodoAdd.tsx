@@ -23,10 +23,12 @@ const TodoAdd = () => {
   const handleAddTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    postNewTodo(newTodo);
-    setNewTodo({
-      title: "",
-      content: "",
+    postNewTodo(newTodo, {
+      onSuccess: () =>
+        setNewTodo({
+          title: "",
+          content: "",
+        }),
     });
   };
 

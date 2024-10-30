@@ -17,3 +17,7 @@ export interface CreateTodoResponse {
 export interface UpdateTodoResponse {
   data: TodoItem;
 }
+
+export interface DeleteTodoResponse {
+  data: null;
+}
