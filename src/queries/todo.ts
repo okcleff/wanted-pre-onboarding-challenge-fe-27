@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { axiosAuthInstance } from "./axiosInstance";
+import { axiosInstance } from "./axiosInstance";
 import { handleAPIError } from "../utils";
 import type {
   NewTodo,
@@ -18,7 +18,7 @@ import { TODO_LIST_FETCH_QUERY_KEY } from "../constants";
 
 // ---------- 새 할 일 추가 ----------
 const postNewTodo = async (todo: NewTodo) => {
-  const response = await axiosAuthInstance.post("/todos", todo);
+  const response = await axiosInstance.post("/todos", todo);
   return response.data;
 };
 
@@ -41,7 +41,7 @@ export const usePostNewTodo = () => {
 
 // ---------- 할 일 목록 조회 ----------
 const getTodos = async () => {
-  const response = await axiosAuthInstance.get("/todos");
+  const response = await axiosInstance.get("/todos");
   return response.data.data;
 };
 
@@ -55,7 +55,7 @@ export const useGetTodos = () => {
 
 // ---------- ID로 할 일 조회 ----------
 const getTodoById = async (id: string) => {
-  const response = await axiosAuthInstance.get(`/todos/${id}`);
+  const response = await axiosInstance.get(`/todos/${id}`);
   return response.data.data;
 };
 
@@ -69,7 +69,7 @@ export const useGetTodoById = (id: string) => {
 
 // ---------- 할 일 수정 ----------
 const updateTodo = async ({ id, title, content }: TodoItem) => {
-  const response = await axiosAuthInstance.put(`/todos/${id}`, {
+  const response = await axiosInstance.put(`/todos/${id}`, {
     title: title,
     content: content,
   });
@@ -98,7 +98,7 @@ export const useUpdateTodo = () => {
 
 // ---------- 할 일 삭제 ----------
 const deleteTodo = async (id: string) => {
-  const response = await axiosAuthInstance.delete(`/todos/${id}`);
+  const response = await axiosInstance.delete(`/todos/${id}`);
   return response.data;
 };
 
