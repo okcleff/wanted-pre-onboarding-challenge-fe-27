@@ -2,9 +2,7 @@ import { useState } from "react";
 import CommonInput from "../components/common/CommonInput";
 import CommonButton from "../components/common/CommonButton";
 import type { AuthFormData } from "../types/auth";
-import { emailRegex } from "../utils";
-
-const MIN_PASSWORD_LENGTH = 8;
+import { MIN_PASSWORD_LENGTH, EMAIL_REGEX } from "../constants";
 
 type AuthInputProps = {
   submitFunc: (data: AuthFormData) => void;
@@ -28,7 +26,7 @@ const useAuthInput = () => {
       switch (name) {
         case "email":
           if (!value) return "이메일을 입력해주세요.";
-          if (!emailRegex.test(value)) {
+          if (!EMAIL_REGEX.test(value)) {
             return "이메일 형식에 맞게 입력해주세요.";
           }
           break;

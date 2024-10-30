@@ -1,19 +1,20 @@
-export type AuthFormData = {
+export interface AuthFormData {
   email: string;
   password: string;
-};
+}
 
-export type AuthResponse = {
+export interface AuthResponse {
   message: string;
   token: string;
-};
+}
 
-export type AuthError = {
+export interface ErrorResponse {
   code: string;
   message: string;
   response?: {
+    status: number;
     data: {
       details: string;
     };
   };
-};
+}

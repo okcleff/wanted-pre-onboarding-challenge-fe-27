@@ -2,16 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { axiosInstance } from "./axiosInstance";
-import type { AuthFormData, AuthResponse, AuthError } from "../types/auth";
-
-const handleAuthError = (
-  error: AuthError,
-  customErrorMessage: string = "에러가 발생했습니다. 잠시 후 다시 시도해주세요."
-) => {
-  console.error("auth.ts - Error", error);
-
-  toast.error(error.response?.data.details || customErrorMessage);
-};
+import { handleAPIError } from "../utils";
+import type { AuthFormData, AuthResponse, ErrorResponse } from "../types/auth";
 
 // ---------- 회원가입 ----------
 const postSignup = async (signupForm: AuthFormData): Promise<AuthResponse> => {
@@ -25,7 +17,7 @@ const postSignup = async (signupForm: AuthFormData): Promise<AuthResponse> => {
 export const usePostSignup = () => {
   const navigate = useNavigate();
 
-  return useMutation<AuthResponse, AuthError, AuthFormData>({
+  return useMutation<AuthResponse, ErrorResponse, AuthFormData>({
     mutationFn: postSignup,
     onSuccess: (res) => {
       localStorage.setItem("token", res.token);
@@ -33,7 +25,7 @@ export const usePostSignup = () => {
       navigate("/");
     },
     onError: (error) => {
-      handleAuthError(
+      handleAPIError(
         error,
         "회원가입에 실패했습니다. 잠시 후 다시 시도해주세요."
       );
@@ -56,7 +48,7 @@ export const postSignin = async (
 export const usePostSignin = () => {
   const navigate = useNavigate();
 
-  return useMutation<AuthResponse, AuthError, AuthFormData>({
+  return useMutation<AuthResponse, ErrorResponse, AuthFormData>({
     mutationFn: postSignin,
     onSuccess: (res) => {
       localStorage.setItem("token", res.token);
@@ -64,9 +56,9 @@ export const usePostSignin = () => {
       navigate("/");
     },
     onError: (error) => {
-      handleAuthError(
+      handleAPIError(
         error,
-        "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요."
+        "로그인에 실패했습니다. 잠시 후 다시 시도해주세요."
       );
     },
   });
