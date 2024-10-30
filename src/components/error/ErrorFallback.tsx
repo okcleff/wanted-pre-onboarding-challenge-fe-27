@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import CommonButton from "../common/CommonButton";
 
-type ErrorFallbackProps = {
+interface ErrorFallbackProps {
   error: {
     message: string;
     response?: {
@@ -12,7 +12,7 @@ type ErrorFallbackProps = {
     };
   };
   resetErrorBoundary: () => void;
-};
+}
 
 const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
   const navigate = useNavigate();

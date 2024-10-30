@@ -1,14 +1,8 @@
 import { useState } from "react";
 import CommonInput from "../components/common/CommonInput";
 import CommonButton from "../components/common/CommonButton";
-import type { AuthFormData } from "../types/auth";
+import type { AuthFormData, AuthInputProps } from "../types/auth";
 import { MIN_PASSWORD_LENGTH, EMAIL_REGEX } from "../constants";
-
-type AuthInputProps = {
-  submitFunc: (data: AuthFormData) => void;
-  buttonText: string;
-  isPending: boolean;
-};
 
 const useAuthInput = () => {
   const AuthInput = ({ submitFunc, buttonText, isPending }: AuthInputProps) => {

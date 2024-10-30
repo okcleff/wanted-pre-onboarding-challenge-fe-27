@@ -1,13 +1,13 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-type CommonInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+interface CommonInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   labelText?: string;
   wrapperClassName?: string;
   labelClassName?: string;
   inputClassName?: string;
   errorMessage?: string;
-};
+}
 
 const CommonInput: React.FC<CommonInputProps> = ({
   id,

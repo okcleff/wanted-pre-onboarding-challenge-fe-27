@@ -1,9 +1,10 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-type CommonButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+interface CommonButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   buttonText: string; // 필수 속성
-};
+}
 
 const CommonButton: React.FC<CommonButtonProps> = ({
   className = "",
