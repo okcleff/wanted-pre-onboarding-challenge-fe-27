@@ -12,17 +12,17 @@ const TodoLayout = () => {
   };
 
   return (
-    <div className="p-8">
-      <div className="flex justify-end">
+    <main className="p-8">
+      <header className="flex justify-end">
         <CommonButton
           type="button"
           buttonText="로그아웃"
           onClick={handleLogout}
           className="w-20"
         />
-      </div>
+      </header>
       <Outlet />
-    </div>
+    </main>
   );
 };
 export default TodoLayout;
