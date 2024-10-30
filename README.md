@@ -1,50 +1,58 @@
-# React + TypeScript + Vite
+# wanted-pre-onboarding-challenge-fe-27
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 프로젝트 소개
 
-Currently, two official plugins are available:
+원티드 프리온보딩 프론트엔드 챌린지 사전과제로 제작한 **Todolist 애플리케이션**입니다.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 프로젝트 실행
 
-## Expanding the ESLint configuration
+### 설치 및 실행 방법
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. 레포지토리를 클론합니다:
 
-- Configure the top-level `parserOptions` property like this:
+   ```bash
+   git clone https://github.com/okcleff/wanted-pre-onboarding-challenge-fe-27.git
+   ```
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+2. 프로젝트 디렉토리로 이동 후 필요한 패키지를 설치합니다:
+
+   ```bash
+   cd wanted-pre-onboarding-challenge-fe-27
+   yarn
+   ```
+
+3. 개발 서버를 실행합니다:
+
+   ```bash
+   yarn dev
+   ```
+
+4. 브라우저에서 [http://localhost:5173/auth/signin](http://localhost:5173/auth/signin)으로 접속하여 앱을 확인할 수 있습니다. (회원가입 및 로그인 필수)
+
+### API 서버 연결
+
+- 사전 과제에서 제공된 TodoList API 서버([http://localhost:8080](http://localhost:8080))가 로컬 환경에서 실행 중인지 확인해주세요.
+
+## 사용한 기술
+
+- React, React Router, Tanstack Query, Tailwind CSS, React Error Boundary 등
+
+## 코드 구조
+
+```plaintext
+src/
+├── components/           # 컴포넌트 모음
+├── hooks/                # 커스텀 훅
+├── pages/                # 페이지 컴포넌트
+├── queries/              # API 호출 관련
+├── types/                # 타입 정의
+├── utils/                # 유틸리티
+├── App.tsx               # 라우팅 및 최상위 컴포넌트
+└── main.tsx              # 앱 진입점
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 개발 과정 중 고려 사항
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- **코드 일관성**: 변수명, 함수명, 코드 스타일의 일관성을 최대한 유지하며 작성
+- **컴포넌트 설계**: 재사용 가능한 컴포넌트 분리 및 파일 구조 관리
+- **에러 처리**: 네트워크 요청 에러나 비동기 작업의 예외 상황을 고려한 에러 핸들링, 에러 바운더리 적용
