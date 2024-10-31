@@ -27,11 +27,11 @@
    yarn dev
    ```
 
-4. 브라우저에서 [http://localhost:5173/auth/signin](http://localhost:5173/auth/signin)으로 접속하여 앱을 확인할 수 있습니다. (회원가입 및 로그인 필수)
+4. 브라우저에서 [http://localhost:5173/auth/signup](http://localhost:5173/auth/signup)으로 접속하여 앱을 확인할 수 있습니다. (회원가입 및 로그인 필수)
 
 ### API 서버 연결
 
-- 사전 과제에서 제공된 TodoList API 서버([http://localhost:8080](http://localhost:8080))가 로컬 환경에서 실행 중인지 확인해주세요.
+- 사전 과제에서 제공된 [TodoList API 서버](https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api)가 로컬 환경([http://localhost:8080](http://localhost:8080))에서 실행 중인지 확인해주세요.
 
 ## 사용한 기술
 
