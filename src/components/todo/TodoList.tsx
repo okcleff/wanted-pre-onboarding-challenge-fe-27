@@ -1,12 +1,10 @@
-import { useSearchParams } from "react-router-dom";
+import useGetTodoIdParam from "../../hooks/useGetTodoIdParam";
 import { useGetTodos } from "../../queries/todo";
 
 const TodoList = () => {
   const { data: todos } = useGetTodos();
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const currentId = searchParams.get("id");
+  const { selectedTodoId, setSelectedTodoId } = useGetTodoIdParam();
 
   return (
     <>
@@ -19,9 +17,9 @@ const TodoList = () => {
               <li
                 key={todo.id}
                 className={`flex items-center justify-between p-2 border-b cursor-pointer hover:bg-gray-100 overflow-scroll ${
-                  todo.id === currentId ? "bg-gray-100" : ""
+                  todo.id === selectedTodoId ? "bg-gray-100" : ""
                 }`}
-                onClick={() => setSearchParams({ id: todo.id })}
+                onClick={() => setSelectedTodoId(todo.id)}
               >
                 {todo.title}
               </li>
