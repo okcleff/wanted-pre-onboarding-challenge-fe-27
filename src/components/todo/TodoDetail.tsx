@@ -10,7 +10,8 @@ import {
 
 const TodoDetail = () => {
   const { selectedTodoId } = useGetTodoIdParam();
-  const { data: selectedTodo } = useGetTodoById(selectedTodoId);
+  const { data: todo } = useGetTodoById(selectedTodoId);
+  const { data: selectedTodo } = todo;
 
   const [editMode, setEditMode] = useState(false);
 

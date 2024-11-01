@@ -17,15 +17,15 @@ axiosInstance.interceptors.request.use((config) => {
 export const apiRequest = {
   get: async <T>(url: string): Promise<T> => {
     const response = await axiosInstance.get(url);
-    return response.data.data;
+    return response.data;
   },
   post: async <T, P>(url: string, payload: P): Promise<T> => {
     const response = await axiosInstance.post(url, payload);
-    return response.data.data;
+    return response.data;
   },
   put: async <T, P>(url: string, payload: P): Promise<T> => {
     const response = await axiosInstance.put(url, payload);
-    return response.data.data;
+    return response.data;
   },
   delete: async <T>(url: string): Promise<T> => {
     const response = await axiosInstance.delete(url);

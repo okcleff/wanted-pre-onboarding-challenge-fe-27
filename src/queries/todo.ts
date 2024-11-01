@@ -7,24 +7,30 @@ import { toast } from "react-toastify";
 import useGetTodoIdParam from "../hooks/useGetTodoIdParam";
 import { apiRequest } from "./axiosInstance";
 import { handleAPIError } from "../utils";
-import type { NewTodo, TodoItem, DeleteTodoResponse } from "../types/todo";
+import type {
+  NewTodo,
+  TodoItem,
+  TodoListResponse,
+  TodoItemResponse,
+  DeleteTodoResponse,
+} from "../types/todo";
 import type { ErrorResponse } from "../types/auth";
 import { TODO_LIST_FETCH_QUERY_KEY } from "../constants";
 
 // ---------- 새 할 일 추가 ----------
 const postNewTodo = async (todo: NewTodo) => {
-  return apiRequest.post<TodoItem, NewTodo>("/todos", todo);
+  return apiRequest.post<TodoItemResponse, NewTodo>("/todos", todo);
 };
 
 export const usePostNewTodo = () => {
   const queryClient = useQueryClient();
   const { setSelectedTodoId } = useGetTodoIdParam();
 
-  return useMutation<TodoItem, ErrorResponse, NewTodo>({
+  return useMutation<TodoItemResponse, ErrorResponse, NewTodo>({
     mutationFn: postNewTodo,
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY });
-      setSelectedTodoId(response.id);
+      setSelectedTodoId(response.data.id);
       toast.success("할 일이 추가되었습니다.");
     },
     onError: (error) =>
@@ -35,11 +41,11 @@ export const usePostNewTodo = () => {
 
 // ---------- 할 일 목록 조회 ----------
 const getTodos = async () => {
-  return apiRequest.get<TodoItem[]>("/todos");
+  return apiRequest.get<TodoListResponse>("/todos");
 };
 
 export const useGetTodos = () => {
-  return useSuspenseQuery<TodoItem[], ErrorResponse>({
+  return useSuspenseQuery<TodoListResponse, ErrorResponse>({
     queryKey: TODO_LIST_FETCH_QUERY_KEY,
     queryFn: getTodos,
   });
@@ -48,11 +54,11 @@ export const useGetTodos = () => {
 
 // ---------- ID로 할 일 조회 ----------
 const getTodoById = async (id: string) => {
-  return apiRequest.get<TodoItem>(`/todos/${id}`);
+  return apiRequest.get<TodoItemResponse>(`/todos/${id}`);
 };
 
 export const useGetTodoById = (id: string) => {
-  return useSuspenseQuery<TodoItem, ErrorResponse>({
+  return useSuspenseQuery<TodoItemResponse, ErrorResponse>({
     queryKey: ["todo", id],
     queryFn: () => getTodoById(id),
   });
@@ -61,7 +67,7 @@ export const useGetTodoById = (id: string) => {
 
 // ---------- 할 일 수정 ----------
 const updateTodo = async ({ id, title, content }: TodoItem) => {
-  return apiRequest.put<TodoItem, { title: string; content: string }>(
+  return apiRequest.put<TodoItemResponse, { title: string; content: string }>(
     `/todos/${id}`,
     {
       title,
@@ -73,14 +79,14 @@ const updateTodo = async ({ id, title, content }: TodoItem) => {
 export const useUpdateTodo = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<TodoItem, ErrorResponse, TodoItem>({
+  return useMutation<TodoItemResponse, ErrorResponse, TodoItem>({
     mutationFn: updateTodo,
     onSuccess: (response) => {
       queryClient.invalidateQueries({
         queryKey: TODO_LIST_FETCH_QUERY_KEY,
       });
       queryClient.invalidateQueries({
-        queryKey: ["todo", response.id],
+        queryKey: ["todo", response.data.id],
       });
       toast.success("할 일이 수정되었습니다.");
     },

@@ -6,13 +6,15 @@ const TodoList = () => {
 
   const { selectedTodoId, setSelectedTodoId } = useGetTodoIdParam();
 
-  if (todos.length === 0) {
+  const { data: todoList } = todos;
+
+  if (todoList.length === 0) {
     return <p>할 일이 없습니다.</p>;
   }
 
   return (
     <ul className="max-h-[500px] overflow-y-scroll">
-      {todos.map((todo) => {
+      {todoList.map((todo) => {
         const { id, title } = todo;
         return (
           <li
