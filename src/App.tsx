@@ -1,15 +1,16 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import SigninPage from "./pages/SigninPage";
-import SignupPage from "./pages/SignupPage";
-import TodoPage from "./pages/TodoPage";
-import NotFoundPage from "./pages/NotFoundPage";
 import QueryClientProvider from "./provider/QueryClientProvider";
 import AuthLayout from "./components/layout/AuthLayout";
 import TodoLayout from "./components/layout/TodoLayout";
 import ErrorBoundaryWrapper from "./components/error/ErrorBoundaryWrapper";
 import "react-toastify/dist/ReactToastify.css";
+
+const SigninPage = React.lazy(() => import("./pages/SigninPage"));
+const SignupPage = React.lazy(() => import("./pages/SignupPage"));
+const TodoPage = React.lazy(() => import("./pages/TodoPage"));
+const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage"));
 
 const isAuthenticated = () => {
   return !!localStorage.getItem("token");
