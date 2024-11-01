@@ -21,11 +21,11 @@ export const apiRequest = {
   },
   post: async <T, P>(url: string, payload: P): Promise<T> => {
     const response = await axiosInstance.post(url, payload);
-    return response.data;
+    return response.data.data;
   },
   put: async <T, P>(url: string, payload: P): Promise<T> => {
     const response = await axiosInstance.put(url, payload);
-    return response.data;
+    return response.data.data;
   },
   delete: async <T>(url: string): Promise<T> => {
     const response = await axiosInstance.delete(url);

@@ -11,13 +11,6 @@ export interface TodoItem {
   updatedAt: string;
 }
 
-export interface CreateTodoResponse {
-  data: TodoItem;
-}
-export interface UpdateTodoResponse {
-  data: TodoItem;
-}
-
 export interface DeleteTodoResponse {
   data: null;
 }

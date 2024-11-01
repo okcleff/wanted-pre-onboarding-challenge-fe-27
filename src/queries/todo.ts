@@ -7,30 +7,24 @@ import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { apiRequest } from "./axiosInstance";
 import { handleAPIError } from "../utils";
-import type {
-  NewTodo,
-  TodoItem,
-  CreateTodoResponse,
-  UpdateTodoResponse,
-  DeleteTodoResponse,
-} from "../types/todo";
+import type { NewTodo, TodoItem, DeleteTodoResponse } from "../types/todo";
 import type { ErrorResponse } from "../types/auth";
 import { TODO_LIST_FETCH_QUERY_KEY } from "../constants";
 
 // ---------- 새 할 일 추가 ----------
 const postNewTodo = async (todo: NewTodo) => {
-  return apiRequest.post<CreateTodoResponse, NewTodo>("/todos", todo);
+  return apiRequest.post<TodoItem, NewTodo>("/todos", todo);
 };
 
 export const usePostNewTodo = () => {
   const queryClient = useQueryClient();
   const [, setSearchParams] = useSearchParams();
 
-  return useMutation<CreateTodoResponse, ErrorResponse, NewTodo>({
+  return useMutation<TodoItem, ErrorResponse, NewTodo>({
     mutationFn: postNewTodo,
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY });
-      setSearchParams({ id: response.data.id });
+      setSearchParams({ id: response.id });
       toast.success("할 일이 추가되었습니다.");
     },
     onError: (error) =>
@@ -67,7 +61,7 @@ export const useGetTodoById = (id: string) => {
 
 // ---------- 할 일 수정 ----------
 const updateTodo = async ({ id, title, content }: TodoItem) => {
-  return apiRequest.put<UpdateTodoResponse, { title: string; content: string }>(
+  return apiRequest.put<TodoItem, { title: string; content: string }>(
     `/todos/${id}`,
     {
       title,
@@ -79,14 +73,14 @@ const updateTodo = async ({ id, title, content }: TodoItem) => {
 export const useUpdateTodo = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<UpdateTodoResponse, ErrorResponse, TodoItem>({
+  return useMutation<TodoItem, ErrorResponse, TodoItem>({
     mutationFn: updateTodo,
     onSuccess: (response) => {
       queryClient.invalidateQueries({
         queryKey: TODO_LIST_FETCH_QUERY_KEY,
       });
       queryClient.invalidateQueries({
-        queryKey: ["todo", response.data.id],
+        queryKey: ["todo", response.id],
       });
       toast.success("할 일이 수정되었습니다.");
     },
