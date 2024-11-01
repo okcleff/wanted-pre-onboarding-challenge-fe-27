@@ -1,25 +1,15 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ToastContainer } from "react-toastify";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import TodoPage from "./pages/TodoPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import QueryClientProvider from "./provider/QueryClientProvider";
 import AuthLayout from "./components/layout/AuthLayout";
 import TodoLayout from "./components/layout/TodoLayout";
 import ErrorBoundaryWrapper from "./components/error/ErrorBoundaryWrapper";
 import "react-toastify/dist/ReactToastify.css";
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: false,
-    },
-  },
-});
 
 const isAuthenticated = () => {
   return !!localStorage.getItem("token");
@@ -35,7 +25,7 @@ const PreAuthenticatedRoute = ({ children }: { children: React.ReactNode }) => {
 
 const App: React.FC = () => {
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider>
       <Routes>
         <Route element={<TodoLayout />}>
           <Route
@@ -74,7 +64,6 @@ const App: React.FC = () => {
       </Routes>
 
       <ToastContainer autoClose={2000} theme="colored" />
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };
