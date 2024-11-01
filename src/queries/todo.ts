@@ -97,12 +97,14 @@ const deleteTodo = async (id: string) => {
 
 export const useDeleteTodo = () => {
   const queryClient = useQueryClient();
-  const { deleteTodoIdParam } = useGetTodoIdParam();
+  const { selectedTodoId, deleteTodoIdParam } = useGetTodoIdParam();
 
   return useMutation<DeleteTodoResponse, ErrorResponse, string>({
     mutationFn: deleteTodo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY });
+      queryClient.removeQueries({ queryKey: ["todo", selectedTodoId] });
+
       // 뒤로가기를 눌렀을 때 삭제된 할 일이 보이지 않도록 하기 위해 URL을 초기화
       window.history.replaceState(null, "", "/");
       toast.success("할 일이 삭제되었습니다.");
