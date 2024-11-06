@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import CommonInput from "../common/CommonInput";
 import CommonButton from "../common/CommonButton";
+import { AUTH_INPUT_DEFAULT_VALUE } from "../../constants";
 import {
   getErrorMessageByValidation,
   hasAnyTruthyField,
@@ -15,15 +16,11 @@ export interface AuthInputProps {
 }
 
 const AuthInput = ({ submitFunc, buttonText, isPending }: AuthInputProps) => {
-  const [submitData, setSubmitData] = useState<AuthFormData>({
-    email: "",
-    password: "",
-  });
+  const [submitData, setSubmitData] = useState<AuthFormData>(
+    AUTH_INPUT_DEFAULT_VALUE
+  );
 
-  const [errors, setErrors] = useState<AuthFormData>({
-    email: "",
-    password: "",
-  });
+  const [errors, setErrors] = useState<AuthFormData>(AUTH_INPUT_DEFAULT_VALUE);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

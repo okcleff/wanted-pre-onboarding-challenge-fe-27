@@ -20,6 +20,7 @@ const TodoDetail = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setEditedTodo({
       ...editedTodo,
       [name]: value,

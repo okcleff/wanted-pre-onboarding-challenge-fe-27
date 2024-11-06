@@ -1,16 +1,16 @@
 import React, { useState } from "react";
+
 import CommonInput from "../common/CommonInput";
 import CommonButton from "../common/CommonButton";
+import { TODO_INPUT_DEFAULT_VALUE } from "../../constants";
 import { usePostNewTodo } from "../../queries/todo";
 
 const TodoAdd = () => {
-  const [newTodo, setNewTodo] = useState({
-    title: "",
-    content: "",
-  });
+  const [newTodo, setNewTodo] = useState(TODO_INPUT_DEFAULT_VALUE);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setNewTodo({
       ...newTodo,
       [name]: value,
@@ -24,11 +24,7 @@ const TodoAdd = () => {
     e.preventDefault();
 
     postNewTodo(newTodo, {
-      onSuccess: () =>
-        setNewTodo({
-          title: "",
-          content: "",
-        }),
+      onSuccess: () => setNewTodo(TODO_INPUT_DEFAULT_VALUE),
     });
   };
 

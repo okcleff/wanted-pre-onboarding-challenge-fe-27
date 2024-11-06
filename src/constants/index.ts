@@ -14,3 +14,13 @@ export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const ACCESS_TOKEN_KEY = "accessToken";
 
 export const TOAST_AUTO_CLOSE_TIME = 2000;
+
+export const AUTH_INPUT_DEFAULT_VALUE = {
+  email: "",
+  password: "",
+};
+
+export const TODO_INPUT_DEFAULT_VALUE = {
+  title: "",
+  content: "",
+};
