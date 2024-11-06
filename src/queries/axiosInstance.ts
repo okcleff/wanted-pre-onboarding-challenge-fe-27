@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import { AuthInstance } from "../utils/auth";
+
 const BASE_URL = "http://localhost:8080";
 
 const axiosInstance = axios.create({
@@ -7,7 +9,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = new AuthInstance(localStorage).get();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
