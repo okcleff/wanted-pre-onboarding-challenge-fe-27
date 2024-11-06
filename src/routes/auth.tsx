@@ -1,9 +1,9 @@
 import { Navigate } from "react-router-dom";
 
-import { AuthInstance } from "../utils/auth";
+import { localStorageAuthInstance } from "../utils/auth";
 
 const isAuthenticated = () => {
-  return new AuthInstance(localStorage).hasToken();
+  return localStorageAuthInstance.hasToken();
 };
 
 export const PrivateRoute = ({ element }: { element: JSX.Element }) => {

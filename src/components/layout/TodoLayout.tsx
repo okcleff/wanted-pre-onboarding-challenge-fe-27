@@ -2,13 +2,13 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import CommonButton from "../common/CommonButton";
-import { AuthInstance } from "../../utils/auth";
+import { localStorageAuthInstance } from "../../utils/auth";
 
 const TodoLayout = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    new AuthInstance(localStorage).remove();
+    localStorageAuthInstance.remove();
     toast.success("로그아웃 되었습니다.");
     navigate("/auth/signin");
   };

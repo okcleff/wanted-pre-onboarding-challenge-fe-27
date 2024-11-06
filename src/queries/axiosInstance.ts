@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { AuthInstance } from "../utils/auth";
+import { localStorageAuthInstance } from "../utils/auth";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 
@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  const token = new AuthInstance(localStorage).get();
+  const token = localStorageAuthInstance.get();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

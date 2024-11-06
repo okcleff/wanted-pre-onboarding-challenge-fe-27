@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 import { apiRequest } from "./axiosInstance";
 import { handleAPIError } from "../utils";
-import { AuthInstance } from "../utils/auth";
+import { localStorageAuthInstance } from "../utils/auth";
 import type { AuthFormData, AuthResponse, ErrorResponse } from "../types/auth";
 
 // ---------- 회원가입 ----------
@@ -21,7 +21,7 @@ export const usePostSignup = () => {
   return useMutation<AuthResponse, ErrorResponse, AuthFormData>({
     mutationFn: postSignup,
     onSuccess: (res) => {
-      new AuthInstance(localStorage).set(res.token);
+      localStorageAuthInstance.set(res.token);
       toast.success("회원가입이 완료되었습니다.");
       navigate("/");
     },
@@ -51,7 +51,7 @@ export const usePostSignin = () => {
   return useMutation<AuthResponse, ErrorResponse, AuthFormData>({
     mutationFn: postSignin,
     onSuccess: (res) => {
-      new AuthInstance(localStorage).set(res.token);
+      localStorageAuthInstance.set(res.token);
       toast.success("로그인 되었습니다.");
       navigate("/");
     },

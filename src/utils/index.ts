@@ -1,7 +1,7 @@
 import { AUTH_ERROR_STATUS } from "../constants";
 import { toast } from "react-toastify";
 
-import { AuthInstance } from "./auth";
+import { localStorageAuthInstance } from "./auth";
 import type { ErrorResponse } from "../types/auth";
 
 export const handleAPIError = <T extends ErrorResponse>(
@@ -20,7 +20,7 @@ export const handleAPIError = <T extends ErrorResponse>(
     return toast.error(definedAuthError.message, {
       autoClose: 1000,
       onClose: () => {
-        new AuthInstance(localStorage).remove();
+        localStorageAuthInstance.remove();
         window.location.href = "/auth/signin";
       },
     });
