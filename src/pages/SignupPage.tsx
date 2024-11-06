@@ -1,17 +1,16 @@
 import { useNavigate } from "react-router-dom";
+
 import AuthPageTitle from "../components/auth/AuthPageTitle";
 import AuthInputSection from "../components/auth/AuthInputSection";
+import AuthInput from "../components/auth/AuthInput";
 import CommonButton from "../components/common/CommonButton";
 import { usePostSignup } from "../queries/auth";
-import useAuthInput from "../hooks/useAuthInput";
 
 const SignupPage = () => {
   const navigate = useNavigate();
 
   const { mutate: postSignupMutation, isPending: isPostSignupPending } =
     usePostSignup();
-
-  const { AuthInput } = useAuthInput();
 
   return (
     <>

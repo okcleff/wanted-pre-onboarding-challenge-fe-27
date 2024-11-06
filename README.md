@@ -37,21 +37,6 @@
 
 - react, react-router-dom, tanstack/react-query, tailwindcss, react-error-boundary 등
 
-## 코드 구조
-
-```plaintext
-src/
-├── components/           # 컴포넌트 모음
-├── constants             # 상수 모음
-├── hooks/                # 커스텀 훅
-├── pages/                # 페이지 컴포넌트
-├── queries/              # API 호출 관련
-├── types/                # 타입 정의
-├── utils/                # 유틸리티
-├── App.tsx               # 라우팅 및 최상위 컴포넌트
-└── main.tsx              # 앱 진입점
-```
-
 ## 개발 과정 중 고려 사항
 
 - **코드 일관성**: 변수명, 함수명, 코드 스타일의 일관성을 최대한 유지하며 작성
