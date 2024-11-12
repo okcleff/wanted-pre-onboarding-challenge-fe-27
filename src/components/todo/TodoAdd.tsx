@@ -2,11 +2,16 @@ import React, { useState } from "react";
 
 import CommonInput from "../common/CommonInput";
 import CommonButton from "../common/CommonButton";
-import { TODO_INPUT_DEFAULT_VALUE } from "../../constants";
+import CommonRadio from "../common/CommonRadio";
+import {
+  TODO_INPUT_DEFAULT_VALUE,
+  TODO_PRIORITY_OPTIONS,
+} from "../../constants";
 import { usePostNewTodo } from "../../queries/todo";
+import type { NewTodo } from "../../types/todo";
 
 const TodoAdd = () => {
-  const [newTodo, setNewTodo] = useState(TODO_INPUT_DEFAULT_VALUE);
+  const [newTodo, setNewTodo] = useState<NewTodo>(TODO_INPUT_DEFAULT_VALUE);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,7 +46,7 @@ const TodoAdd = () => {
           inputClassName="py-2 text-gray-700"
         />
       </div>
-      <div className="mb-6">
+      <div className="mb-4">
         <CommonInput
           type="textarea"
           name="content"
@@ -49,6 +54,14 @@ const TodoAdd = () => {
           onChange={handleInputChange}
           placeholder="새로운 할 일 내용"
           inputClassName="py-2 text-gray-700"
+        />
+      </div>
+      <div className="mb-4">
+        <CommonRadio
+          name="priority"
+          options={TODO_PRIORITY_OPTIONS}
+          value={newTodo.priority}
+          onChange={handleInputChange}
         />
       </div>
       <div className="flex items-center justify-end">

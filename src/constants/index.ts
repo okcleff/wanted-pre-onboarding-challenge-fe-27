@@ -1,3 +1,5 @@
+import type { NewTodo } from "../types/todo";
+
 export const TODO_LIST_FETCH_QUERY_KEY = ["todos"];
 
 export const AUTH_ERROR_STATUS = [
@@ -20,7 +22,17 @@ export const AUTH_INPUT_DEFAULT_VALUE = {
   password: "",
 };
 
-export const TODO_INPUT_DEFAULT_VALUE = {
+export const TODO_INPUT_DEFAULT_VALUE: NewTodo = {
   title: "",
   content: "",
+  priority: "normal",
 };
+
+export const TODO_PRIORITY_OPTIONS: {
+  value: "urgent" | "normal" | "low";
+  label: string;
+}[] = [
+  { value: "urgent", label: "긴급" },
+  { value: "normal", label: "보통" },
+  { value: "low", label: "낮음" },
+];
