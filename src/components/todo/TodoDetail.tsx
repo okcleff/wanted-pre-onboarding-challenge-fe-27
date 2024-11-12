@@ -122,7 +122,9 @@ const TodoDetail = () => {
           <div>
             <div className="flex justify-between">
               <h3 className="text-lg font-semibold">{selectedTodo.title}</h3>
-              <TodoPriorityLabel priority={selectedTodo.priority} />
+              {selectedTodo.priority && (
+                <TodoPriorityLabel priority={selectedTodo.priority} />
+              )}
             </div>
 
             <p>{selectedTodo.content}</p>

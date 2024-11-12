@@ -1,5 +1,6 @@
 import React from "react";
 
+import { TODO_PRIORITY_OPTIONS, TODO_SORT_OPTIONS } from "../../constants";
 import type { TodoFilters } from "../../types/todo";
 
 interface TodoListFilterProps {
@@ -29,7 +30,7 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
 
   const handleSort = (
     sort: TodoFilters["sort"],
-    order: TodoFilters["order"],
+    order: TodoFilters["order"]
   ) => {
     setFilters((prev) => ({
       ...prev,
@@ -47,9 +48,11 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
         }
       >
         <option value="">모든 우선순위</option>
-        <option value="urgent">긴급</option>
-        <option value="normal">보통</option>
-        <option value="low">낮음</option>
+        {TODO_PRIORITY_OPTIONS.map(({ value, label }) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
       </select>
 
       <input
@@ -65,14 +68,15 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
           const [sort, order] = e.target.value.split("-");
           handleSort(
             sort as TodoFilters["sort"],
-            order as TodoFilters["order"],
+            order as TodoFilters["order"]
           );
         }}
       >
-        <option value="createdAt-desc">최신순</option>
-        <option value="createdAt-asc">오래된순</option>
-        <option value="updatedAt-desc">최근 수정순</option>
-        <option value="updatedAt-asc">과거 수정순</option>
+        {TODO_SORT_OPTIONS.map(({ value, label }) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
       </select>
     </div>
   );

@@ -38,7 +38,9 @@ const TodoList = () => {
                 onClick={() => setSelectedTodoId(id)}
               >
                 <span>{title}</span>
-                <TodoPriorityLabel priority={todo.priority} />
+                {todo.priority && (
+                  <TodoPriorityLabel priority={todo.priority} />
+                )}
               </li>
             );
           })}

@@ -51,3 +51,10 @@ export const TODO_PRIORITY_LABEL = {
     color: "text-emerald-600 bg-emerald-50",
   },
 };
+
+export const TODO_SORT_OPTIONS = [
+  { value: "createdAt-desc", label: "최신순" },
+  { value: "createdAt-asc", label: "오래된순" },
+  { value: "updatedAt-desc", label: "최근 수정순" },
+  { value: "updatedAt-asc", label: "과거 수정순" },
+];
