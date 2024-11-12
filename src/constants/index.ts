@@ -36,3 +36,18 @@ export const TODO_PRIORITY_OPTIONS: {
   { value: "normal", label: "보통" },
   { value: "low", label: "낮음" },
 ];
+
+export const TODO_PRIORITY_LABEL = {
+  urgent: {
+    label: "긴급",
+    color: "text-rose-600 bg-rose-50",
+  },
+  normal: {
+    label: "보통",
+    color: "text-amber-600 bg-amber-50",
+  },
+  low: {
+    label: "낮음",
+    color: "text-emerald-600 bg-emerald-50",
+  },
+};

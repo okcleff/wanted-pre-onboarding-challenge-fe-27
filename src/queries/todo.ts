@@ -13,6 +13,7 @@ import type {
   TodoListResponse,
   TodoItemResponse,
   DeleteTodoResponse,
+  TodoPriority,
 } from "../types/todo";
 import type { ErrorResponse } from "../types/auth";
 import { TODO_LIST_FETCH_QUERY_KEY } from "../constants";
@@ -66,14 +67,15 @@ export const useGetTodoById = (id: string) => {
 // ---------- ID로 할 일 조회 ----------
 
 // ---------- 할 일 수정 ----------
-const updateTodo = async ({ id, title, content }: TodoItem) => {
-  return apiRequest.put<TodoItemResponse, { title: string; content: string }>(
-    `/todos/${id}`,
-    {
-      title,
-      content,
-    }
-  );
+const updateTodo = async ({ id, title, content, priority }: TodoItem) => {
+  return apiRequest.put<
+    TodoItemResponse,
+    { title: string; content: string; priority: TodoPriority }
+  >(`/todos/${id}`, {
+    title,
+    content,
+    priority,
+  });
 };
 
 export const useUpdateTodo = () => {

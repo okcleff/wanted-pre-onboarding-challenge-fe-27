@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import useGetTodoIdParam from "../../hooks/useGetTodoIdParam";
 import CommonInput from "../common/CommonInput";
 import CommonButton from "../common/CommonButton";
+import CommonRadio from "../common/CommonRadio";
+import TodoPriorityLabel from "./TodoPriorityLabel";
+import { TODO_PRIORITY_OPTIONS } from "../../constants";
 import {
   useGetTodoById,
   useUpdateTodo,
@@ -72,6 +75,7 @@ const TodoDetail = () => {
               labelText="제목"
               inputClassName="py-2"
             />
+
             <CommonInput
               type="text"
               name="content"
@@ -79,6 +83,14 @@ const TodoDetail = () => {
               onChange={handleInputChange}
               labelText="내용"
               inputClassName="py-2"
+            />
+
+            <CommonRadio
+              name="priority"
+              options={TODO_PRIORITY_OPTIONS}
+              value={editedTodo.priority}
+              onChange={handleInputChange}
+              fieldsetClassName="mt-2"
             />
 
             <div className="flex justify-end gap-3 mt-5">
@@ -108,7 +120,10 @@ const TodoDetail = () => {
           </form>
         ) : (
           <div>
-            <h3 className="text-lg font-semibold mb-2">{selectedTodo.title}</h3>
+            <div className="flex justify-between">
+              <h3 className="text-lg font-semibold">{selectedTodo.title}</h3>
+              <TodoPriorityLabel priority={selectedTodo.priority} />
+            </div>
 
             <p>{selectedTodo.content}</p>
 

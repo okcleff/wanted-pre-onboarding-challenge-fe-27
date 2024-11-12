@@ -1,5 +1,6 @@
 import useGetTodoIdParam from "../../hooks/useGetTodoIdParam";
 import { useGetTodos } from "../../queries/todo";
+import TodoPriorityLabel from "./TodoPriorityLabel";
 
 const TodoList = () => {
   const { data: todos } = useGetTodos();
@@ -24,7 +25,8 @@ const TodoList = () => {
             }`}
             onClick={() => setSelectedTodoId(id)}
           >
-            {title}
+            <span>{title}</span>
+            <TodoPriorityLabel priority={todo.priority} />
           </li>
         );
       })}
