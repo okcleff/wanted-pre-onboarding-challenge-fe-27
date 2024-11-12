@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
+import { useDebounce } from "../../hooks/useDebounce";
 import { TODO_PRIORITY_OPTIONS, TODO_SORT_OPTIONS } from "../../constants";
 import type { TodoFilters } from "../../types/todo";
 
@@ -21,12 +22,17 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
     }));
   };
 
-  const handleSearch = (keyword: string) => {
+  // ---------- 검색어 입력 로직 ----------
+  const [searchInput, setSearchInput] = useState(filters.keyword || "");
+  const debouncedSearch = useDebounce(searchInput, 300);
+
+  useEffect(() => {
     setFilters((prev) => ({
       ...prev,
-      keyword: keyword || undefined, // 빈 문자열은 undefined로 처리
+      keyword: debouncedSearch || undefined,
     }));
-  };
+  }, [debouncedSearch, setFilters]);
+  // ---------- 검색어 입력 로직 ----------
 
   const handleSort = (
     sort: TodoFilters["sort"],
@@ -58,8 +64,8 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
       <input
         type="text"
         placeholder="검색어 입력..."
-        value={filters.keyword || ""}
-        onChange={(e) => handleSearch(e.target.value)}
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
       />
 
       <select
