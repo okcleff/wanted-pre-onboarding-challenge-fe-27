@@ -6,7 +6,7 @@ import {
 import { toast } from "react-toastify";
 import useGetTodoIdParam from "../hooks/useGetTodoIdParam";
 import { apiRequest } from "./axiosInstance";
-import { handleAPIError } from "../utils";
+import { handleAPIError, createQueryString } from "../utils";
 import type {
   NewTodo,
   TodoItem,
@@ -14,6 +14,7 @@ import type {
   TodoItemResponse,
   DeleteTodoResponse,
   TodoPriority,
+  TodoFilters,
 } from "../types/todo";
 import type { ErrorResponse } from "../types/auth";
 import { TODO_LIST_FETCH_QUERY_KEY } from "../constants";
@@ -41,14 +42,15 @@ export const usePostNewTodo = () => {
 // ---------- 새 할 일 추가 ----------
 
 // ---------- 할 일 목록 조회 ----------
-const getTodos = async () => {
-  return apiRequest.get<TodoListResponse>("/todos");
+const getTodos = async (filters: TodoFilters = {}) => {
+  const queryString = createQueryString(filters);
+  return apiRequest.get<TodoListResponse>(`/todos${queryString}`);
 };
 
-export const useGetTodos = () => {
+export const useGetTodos = (filters: TodoFilters) => {
   return useSuspenseQuery<TodoListResponse, ErrorResponse>({
-    queryKey: TODO_LIST_FETCH_QUERY_KEY,
-    queryFn: getTodos,
+    queryKey: [...TODO_LIST_FETCH_QUERY_KEY, filters],
+    queryFn: () => getTodos(filters),
   });
 };
 // ---------- 할 일 목록 조회 ----------
@@ -60,7 +62,7 @@ const getTodoById = async (id: string) => {
 
 export const useGetTodoById = (id: string) => {
   return useSuspenseQuery<TodoItemResponse, ErrorResponse>({
-    queryKey: ["todo", id],
+    queryKey: [...TODO_LIST_FETCH_QUERY_KEY, id],
     queryFn: () => getTodoById(id),
   });
 };
@@ -88,7 +90,7 @@ export const useUpdateTodo = () => {
         queryKey: TODO_LIST_FETCH_QUERY_KEY,
       });
       queryClient.invalidateQueries({
-        queryKey: ["todo", response.data.id],
+        queryKey: [...TODO_LIST_FETCH_QUERY_KEY, response.data.id],
       });
       toast.success("할 일이 수정되었습니다.");
     },
@@ -111,7 +113,9 @@ export const useDeleteTodo = () => {
     mutationFn: deleteTodo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: TODO_LIST_FETCH_QUERY_KEY });
-      queryClient.removeQueries({ queryKey: ["todo", selectedTodoId] });
+      queryClient.removeQueries({
+        queryKey: [...TODO_LIST_FETCH_QUERY_KEY, selectedTodoId],
+      });
 
       // 뒤로가기를 눌렀을 때 삭제된 할 일이 보이지 않도록 하기 위해 URL을 초기화
       window.history.replaceState(null, "", "/");

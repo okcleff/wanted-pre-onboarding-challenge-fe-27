@@ -25,3 +25,10 @@ export interface TodoItemResponse {
 export interface DeleteTodoResponse {
   data: null;
 }
+
+export interface TodoFilters extends Record<string, string | undefined> {
+  priorityFilter?: TodoPriority;
+  keyword?: string;
+  sort?: "createdAt" | "updatedAt";
+  order?: "asc" | "desc";
+}
