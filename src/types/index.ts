@@ -1,1 +1,1 @@
-export type FilterValue = string | number | boolean | null | undefined;
+export type QueryValue = string | number | boolean | null | undefined;

@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router";
 
 import TodoPriorityLabel from "./TodoPriorityLabel";
 import TodoListFilter from "./TodoListFilter";
-import { useFilterParams } from "../../hooks/useFilterParams";
+import { useQueryString } from "../../hooks/useQueryString";
 import { todoFilterSanitizer } from "../../utils/todo";
 import { useGetTodos } from "../../queries/todo";
 import { INITIAL_TODO_FILTERS } from "../../constants";
@@ -12,10 +12,11 @@ const TodoList = () => {
   const { id: selectedTodoId } = useParams();
   const navigate = useNavigate();
 
-  const { filters, setFilters } = useFilterParams<TodoFilters>({
-    initialFilters: INITIAL_TODO_FILTERS,
-    sanitizeFilter: todoFilterSanitizer,
-  });
+  const { queries: filters, setQueries: setFilters } =
+    useQueryString<TodoFilters>({
+      initialQueries: INITIAL_TODO_FILTERS,
+      sanitizeQueries: todoFilterSanitizer,
+    });
 
   const { data: todos } = useGetTodos({ ...filters });
 
