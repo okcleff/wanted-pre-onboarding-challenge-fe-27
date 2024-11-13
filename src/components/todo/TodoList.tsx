@@ -1,21 +1,23 @@
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router";
+
 import TodoPriorityLabel from "./TodoPriorityLabel";
 import TodoListFilter from "./TodoListFilter";
-import useGetTodoIdParam from "../../hooks/useGetTodoIdParam";
+import { useFilterParams } from "../../hooks/useFilterParams";
+import { todoFilterSanitizer } from "../../utils/todo";
 import { useGetTodos } from "../../queries/todo";
+import { INITIAL_TODO_FILTERS } from "../../constants";
 import type { TodoFilters } from "../../types/todo";
 
 const TodoList = () => {
-  const [filters, setFilters] = useState<TodoFilters>({
-    priorityFilter: undefined,
-    keyword: undefined,
-    sort: "createdAt",
-    order: "desc",
+  const { id: selectedTodoId } = useParams();
+  const navigate = useNavigate();
+
+  const { filters, setFilters } = useFilterParams<TodoFilters>({
+    initialFilters: INITIAL_TODO_FILTERS,
+    sanitizeFilter: todoFilterSanitizer,
   });
 
   const { data: todos } = useGetTodos({ ...filters });
-
-  const { selectedTodoId, setSelectedTodoId } = useGetTodoIdParam();
 
   const { data: todoList } = todos;
 
@@ -35,7 +37,7 @@ const TodoList = () => {
                 className={`flex items-center justify-between p-2 border-b cursor-pointer hover:bg-gray-100 overflow-scroll ${
                   id === selectedTodoId ? "bg-gray-100" : ""
                 }`}
-                onClick={() => setSelectedTodoId(id)}
+                onClick={() => navigate(id)}
               >
                 <span>{title}</span>
                 {todo.priority && (

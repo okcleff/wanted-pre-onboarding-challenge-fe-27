@@ -23,6 +23,16 @@ const router = createBrowserRouter([
             <PrivateRoute element={<TodoPage />} />
           </ErrorBoundaryWrapper>
         ),
+        children: [
+          {
+            path: "/:id",
+            element: (
+              <ErrorBoundaryWrapper>
+                <PrivateRoute element={<TodoPage />} />
+              </ErrorBoundaryWrapper>
+            ),
+          },
+        ],
       },
     ],
   },

@@ -1,4 +1,4 @@
-import type { NewTodo } from "../types/todo";
+import type { NewTodo, TodoFilters, TodoPriority } from "../types/todo";
 
 export const TODO_LIST_FETCH_QUERY_KEY = ["todos"];
 
@@ -17,6 +17,8 @@ export const ACCESS_TOKEN_KEY = "accessToken";
 
 export const TOAST_AUTO_CLOSE_TIME = 2000;
 
+export const DEBOUNCE_DEFAULT_DELAY = 300;
+
 export const AUTH_INPUT_DEFAULT_VALUE = {
   email: "",
   password: "",
@@ -29,7 +31,7 @@ export const TODO_INPUT_DEFAULT_VALUE: NewTodo = {
 };
 
 export const TODO_PRIORITY_OPTIONS: {
-  value: "urgent" | "normal" | "low";
+  value: TodoPriority;
   label: string;
 }[] = [
   { value: "urgent", label: "긴급" },
@@ -58,3 +60,10 @@ export const TODO_SORT_OPTIONS = [
   { value: "updatedAt-desc", label: "최근 수정순" },
   { value: "updatedAt-asc", label: "과거 수정순" },
 ];
+
+export const INITIAL_TODO_FILTERS: TodoFilters = {
+  priorityFilter: undefined,
+  keyword: undefined,
+  sort: "createdAt",
+  order: "desc",
+};

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import CommonInput from "../common/CommonInput";
+import CommonSelect from "../common/CommonSelect";
 import { useDebounce } from "../../hooks/useDebounce";
 import { TODO_PRIORITY_OPTIONS, TODO_SORT_OPTIONS } from "../../constants";
 import type { TodoFilters } from "../../types/todo";
@@ -13,8 +15,6 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
   filters,
   setFilters,
 }) => {
-  // TODO: input debounce 적용, 검색어 입력 api 요청 이후 input에 focus
-
   const handlePriorityChange = (priority: TodoFilters["priorityFilter"]) => {
     setFilters((prev) => ({
       ...prev,
@@ -24,7 +24,7 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
 
   // ---------- 검색어 입력 로직 ----------
   const [searchInput, setSearchInput] = useState(filters.keyword || "");
-  const debouncedSearch = useDebounce(searchInput, 300);
+  const debouncedSearch = useDebounce(searchInput).trim();
 
   useEffect(() => {
     setFilters((prev) => ({
@@ -36,7 +36,7 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
 
   const handleSort = (
     sort: TodoFilters["sort"],
-    order: TodoFilters["order"]
+    order: TodoFilters["order"],
   ) => {
     setFilters((prev) => ({
       ...prev,
@@ -47,21 +47,15 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
 
   return (
     <div className="flex gap-4 mb-4">
-      <select
+      <CommonSelect
         value={filters.priorityFilter || ""}
         onChange={(e) =>
           handlePriorityChange(e.target.value as TodoFilters["priorityFilter"])
         }
-      >
-        <option value="">모든 우선순위</option>
-        {TODO_PRIORITY_OPTIONS.map(({ value, label }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </select>
+        options={[{ value: "", label: "전체" }, ...TODO_PRIORITY_OPTIONS]}
+      />
 
-      <input
+      <CommonInput
         type="text"
         placeholder="검색어 입력..."
         value={searchInput}
@@ -74,7 +68,7 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
           const [sort, order] = e.target.value.split("-");
           handleSort(
             sort as TodoFilters["sort"],
-            order as TodoFilters["order"]
+            order as TodoFilters["order"],
           );
         }}
       >

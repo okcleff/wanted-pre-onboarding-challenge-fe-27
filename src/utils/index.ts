@@ -2,6 +2,7 @@ import { AUTH_ERROR_STATUS } from "../constants";
 import { toast } from "react-toastify";
 
 import { localStorageAuthInstance } from "./auth";
+import type { FilterValue } from "../types/index";
 import type { ErrorResponse } from "../types/auth";
 
 export const handleAPIError = <T extends ErrorResponse>(
@@ -30,17 +31,36 @@ export const handleAPIError = <T extends ErrorResponse>(
   toast.error(error.response?.data.details || customErrorMessage);
 };
 
-export const createQueryString = (
-  params: Record<string, string | undefined>,
-) => {
+export const createQueryString = <T extends Record<string, FilterValue>>(
+  params: T,
+): string => {
   const searchParams = new URLSearchParams();
-
   Object.entries(params).forEach(([key, value]) => {
-    if (value) {
-      searchParams.append(key, value);
+    if (value !== undefined && value !== "") {
+      searchParams.set(key, String(value));
     }
   });
 
   const queryString = searchParams.toString();
   return queryString ? `?${queryString}` : "";
+};
+
+export const initializeFilters = <T extends Record<string, FilterValue>>(
+  initialFilters: T,
+  searchParams: URLSearchParams,
+  sanitizeFilter: (key: keyof T, value: string) => T[keyof T] | undefined,
+): T => {
+  const filters = { ...initialFilters };
+
+  (Object.keys(filters) as Array<keyof T>).forEach((key) => {
+    const value = searchParams.get(String(key));
+    if (value) {
+      const sanitizedValue = sanitizeFilter(key, value);
+      if (sanitizedValue !== undefined) {
+        filters[key] = sanitizedValue;
+      }
+    }
+  });
+
+  return filters;
 };
