@@ -1,6 +1,6 @@
 import React, { lazy } from "react";
 
-import useGetTodoIdParam from "../hooks/useGetTodoIdParam";
+import useHandleParams from "../hooks/useHandleParams";
 import TodoAdd from "../components/todo/TodoAdd";
 import TodoList from "../components/todo/TodoList";
 import ErrorBoundaryWrapper from "../components/error/ErrorBoundaryWrapper";
@@ -8,7 +8,7 @@ import ErrorBoundaryWrapper from "../components/error/ErrorBoundaryWrapper";
 const TodoDetail = lazy(() => import("../components/todo/TodoDetail"));
 
 const TodoPage: React.FC = () => {
-  const { selectedTodoId } = useGetTodoIdParam();
+  const { selectedParam: selectedTodoId } = useHandleParams("id");
 
   return (
     <>

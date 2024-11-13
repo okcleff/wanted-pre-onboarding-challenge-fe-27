@@ -1,14 +1,15 @@
 import TodoPriorityLabel from "./TodoPriorityLabel";
 import TodoListFilter from "./TodoListFilter";
-import useGetTodoIdParam from "../../hooks/useGetTodoIdParam";
-import { useQueryString } from "../../hooks/useQueryString";
+import useHandleParams from "../../hooks/useHandleParams";
+import useQueryString from "../../hooks/useQueryString";
 import { todoFilterSanitizer } from "../../utils/todo";
 import { useGetTodos } from "../../queries/todo";
 import { INITIAL_TODO_FILTERS } from "../../constants";
 import type { TodoFilters } from "../../types/todo";
 
 const TodoList = () => {
-  const { selectedTodoId, setSelectedTodoId } = useGetTodoIdParam();
+  const { selectedParam: selectedTodoId, setSelectedParam: setSelectedTodoId } =
+    useHandleParams("id");
 
   const { queries: filters, setQueries: setFilters } =
     useQueryString<TodoFilters>({

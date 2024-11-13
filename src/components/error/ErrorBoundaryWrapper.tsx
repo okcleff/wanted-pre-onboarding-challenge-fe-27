@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
-import useGetTodoIdParam from "../../hooks/useGetTodoIdParam";
+import useHandleParams from "../../hooks/useHandleParams";
 import ErrorFallback from "./ErrorFallback";
 import Loading from "../common/Loading";
 
@@ -13,7 +13,7 @@ const ErrorBoundaryWrapper: React.FC<ErrorBoundaryWrapperProps> = ({
   children,
 }) => {
   // TodoDetail에서 오류가 발생했을 때, TodoList에서 할 일을 다시 클릭하여 TodoDetail를 리셋하기 위함
-  const { selectedTodoId } = useGetTodoIdParam();
+  const { selectedParam: selectedTodoId } = useHandleParams("id");
 
   return (
     <ErrorBoundary

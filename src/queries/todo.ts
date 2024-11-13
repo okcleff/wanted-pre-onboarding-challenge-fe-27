@@ -4,7 +4,8 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import useGetTodoIdParam from "../hooks/useGetTodoIdParam";
+
+import useHandleParams from "../hooks/useHandleParams";
 import { apiRequest } from "./axiosInstance";
 import { handleAPIError, createQueryString } from "../utils";
 import type {
@@ -26,7 +27,7 @@ const postNewTodo = async (todo: NewTodo) => {
 
 export const usePostNewTodo = () => {
   const queryClient = useQueryClient();
-  const { setSelectedTodoId } = useGetTodoIdParam();
+  const { setSelectedParam: setSelectedTodoId } = useHandleParams("id");
 
   return useMutation<TodoItemResponse, ErrorResponse, NewTodo>({
     mutationFn: postNewTodo,
@@ -107,7 +108,7 @@ const deleteTodo = async (id: string) => {
 
 export const useDeleteTodo = () => {
   const queryClient = useQueryClient();
-  const { selectedTodoId, goToHome } = useGetTodoIdParam();
+  const { selectedParam: selectedTodoId, goToHome } = useHandleParams("id");
 
   return useMutation<DeleteTodoResponse, ErrorResponse, string>({
     mutationFn: deleteTodo,

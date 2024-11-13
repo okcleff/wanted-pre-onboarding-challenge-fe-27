@@ -8,8 +8,7 @@ export interface QueryConfig<T extends Record<string, QueryValue>> {
   initialQueries: T;
   sanitizeQueries?: (key: keyof T, value: string) => T[keyof T] | undefined; // 필터값에 대한 유효성 검증 로직
 }
-
-export const useQueryString = <T extends Record<string, QueryValue>>({
+const useQueryString = <T extends Record<string, QueryValue>>({
   initialQueries,
   sanitizeQueries = (_, value) => value as T[keyof T],
 }: QueryConfig<T>) => {
@@ -35,3 +34,5 @@ export const useQueryString = <T extends Record<string, QueryValue>>({
     updateQuery,
   };
 };
+
+export default useQueryString;
