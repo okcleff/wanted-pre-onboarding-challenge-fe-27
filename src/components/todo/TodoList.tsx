@@ -8,14 +8,14 @@ import { INITIAL_TODO_FILTERS } from "../../constants";
 import type { TodoFilters } from "../../types/todo";
 
 const TodoList = () => {
-  const { selectedParam: selectedTodoId, setSelectedParam: setSelectedTodoId } =
-    useHandleParams("id");
-
   const { queries: filters, setQueries: setFilters } =
     useQueryString<TodoFilters>({
       initialQueries: INITIAL_TODO_FILTERS,
       sanitizeQueries: todoFilterSanitizer,
     });
+
+  const { selectedParam: selectedTodoId, setSelectedParam: setSelectedTodoId } =
+    useHandleParams("id");
 
   const { data: todos } = useGetTodos({ ...filters });
 

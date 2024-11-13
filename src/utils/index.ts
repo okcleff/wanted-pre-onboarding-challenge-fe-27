@@ -34,6 +34,8 @@ export const handleAPIError = <T extends ErrorResponse>(
 export const createQueryString = <T extends Record<string, QueryValue>>(
   params: T,
 ): string => {
+  if (!params) return "";
+
   const searchParams = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== "") {
@@ -63,4 +65,27 @@ export const initializeQueries = <T extends Record<string, QueryValue>>(
   });
 
   return queries;
+};
+
+export const getInitialQueriesFromURL = (): Record<string, QueryValue> => {
+  const searchParams = new URLSearchParams(window.location.search);
+  const initialQueries: Record<string, QueryValue> = {};
+
+  searchParams.forEach((value, key) => {
+    // 숫자 문자열을 숫자로 변환
+    if (/^\d+$/.test(value)) {
+      initialQueries[key] = parseInt(value, 10);
+    } else if (/^\d*\.\d+$/.test(value)) {
+      initialQueries[key] = parseFloat(value);
+    } else if (value === "true") {
+      initialQueries[key] = true;
+    } else if (value === "false") {
+      initialQueries[key] = false;
+    } else if (value === "null") {
+      initialQueries[key] = null;
+    } else {
+      initialQueries[key] = value;
+    }
+  });
+  return initialQueries;
 };
