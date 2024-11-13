@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import type { Params } from "react-router-dom";
+import { startTransition } from "react";
 
 const useHandleParams = (paramName: string) => {
   const params: Params = useParams();
@@ -8,11 +9,9 @@ const useHandleParams = (paramName: string) => {
   const navigate = useNavigate();
 
   const setSelectedParam = (value: string) => {
-    const newParams = { ...params, [paramName]: value };
-    const newPath = `/${Object.keys(newParams)
-      .map((key) => `${key}/${newParams[key]}`)
-      .join("/")}`;
-    navigate(newPath);
+    startTransition(() => {
+      navigate(value);
+    });
   };
 
   const goToHome = () => {

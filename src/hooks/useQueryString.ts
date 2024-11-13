@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import useSearchParams from "./useSearchParams";
+// import { useSearchParams } from "react-router-dom";
 
 import { createQueryString, initializeQueries } from "../utils";
 import type { QueryValue } from "../types/index";
