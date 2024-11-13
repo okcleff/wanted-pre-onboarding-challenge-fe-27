@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { IoMdRefresh } from "react-icons/io";
 
 import CommonInput from "../common/CommonInput";
 import CommonSelect from "../common/CommonSelect";
 import { useDebounce } from "../../hooks/useDebounce";
-import { TODO_PRIORITY_OPTIONS, TODO_SORT_OPTIONS } from "../../constants";
+import {
+  TODO_PRIORITY_OPTIONS,
+  TODO_SORT_OPTIONS,
+  INITIAL_TODO_FILTERS,
+} from "../../constants";
 import type { TodoFilters } from "../../types/todo";
 
 interface TodoListFilterProps {
@@ -15,7 +20,8 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
   filters,
   setFilters,
 }) => {
-  const handlePriorityChange = (priority: TodoFilters["priorityFilter"]) => {
+  const handlePriorityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const priority = e.target.value as TodoFilters["priorityFilter"];
     setFilters((prev) => ({
       ...prev,
       priorityFilter: priority,
@@ -34,24 +40,25 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
   }, [debouncedSearch, setFilters]);
   // ---------- 검색어 입력 로직 ----------
 
-  const handleSort = (
-    sort: TodoFilters["sort"],
-    order: TodoFilters["order"],
-  ) => {
+  const handleSortValueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const [sort, order] = e.target.value.split("-");
     setFilters((prev) => ({
       ...prev,
-      sort,
-      order,
+      sort: sort as TodoFilters["sort"],
+      order: order as TodoFilters["order"],
     }));
   };
 
+  const handleRefreshFilter = () => {
+    setFilters(INITIAL_TODO_FILTERS);
+    setSearchInput("");
+  };
+
   return (
-    <div className="flex gap-4 mb-4">
+    <div className="flex justify-end items-center gap-4 mb-4">
       <CommonSelect
         value={filters.priorityFilter || ""}
-        onChange={(e) =>
-          handlePriorityChange(e.target.value as TodoFilters["priorityFilter"])
-        }
+        onChange={handlePriorityChange}
         options={[{ value: "", label: "전체" }, ...TODO_PRIORITY_OPTIONS]}
       />
 
@@ -63,22 +70,13 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
         wrapperClassName="mt-0"
       />
 
-      <select
+      <CommonSelect
         value={`${filters.sort}-${filters.order}`}
-        onChange={(e) => {
-          const [sort, order] = e.target.value.split("-");
-          handleSort(
-            sort as TodoFilters["sort"],
-            order as TodoFilters["order"],
-          );
-        }}
-      >
-        {TODO_SORT_OPTIONS.map(({ value, label }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </select>
+        onChange={handleSortValueChange}
+        options={TODO_SORT_OPTIONS}
+      />
+
+      <IoMdRefresh onClick={handleRefreshFilter} className="cursor-pointer" />
     </div>
   );
 };
