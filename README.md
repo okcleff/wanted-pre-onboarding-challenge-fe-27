@@ -2,11 +2,13 @@
 
 ## 프로젝트 소개
 
-원티드 프리온보딩 프론트엔드 챌린지 사전과제로 제작한 **Todolist 애플리케이션**입니다.
+원티드 프리온보딩 프론트엔드 챌린지 사전과제로 처음 제작하고, 강의 내용을 반영하여 리팩토링을 거듭한 **Todo List 애플리케이션**입니다.
 
 ## 프로젝트 실행
 
-### 설치 및 실행 방법
+### > 라이브 배포 서버([https://wanted-pre-onboarding-challenge-fe-27-kepyskvle.vercel.app/](https://wanted-pre-onboarding-challenge-fe-27-kepyskvle.vercel.app/))
+
+### > 로컬 설치 및 실행 방법
 
 1. 레포지토리를 클론합니다:
 
@@ -27,11 +29,11 @@
    yarn dev
    ```
 
-4. 브라우저에서 [http://localhost:5173/auth/signup](http://localhost:5173/auth/signup)으로 접속하여 앱을 확인할 수 있습니다. (회원가입 및 로그인 필수)
+4. 로컬 브라우저에서 [http://localhost:5173/auth/signup](http://localhost:5173/auth/signup)으로 접속해서 앱을 확인할 수 있습니다. (회원가입 및 로그인 필수)
 
-### API 서버 연결
+### > API 서버 연결
 
-- 사전 과제에서 제공된 [TodoList API 서버](https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api)가 로컬 환경([http://localhost:8080](http://localhost:8080))에서 실행 중인지 확인해주세요.
+- 사전 과제에서 제공된 [TodoList API 서버](https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api/tree/refactor)의 **refactor** 브랜치를 설치하고, 로컬 환경([http://localhost:8080](http://localhost:8080))에서 실행 중인지 확인해주세요.
 
 ## 사용한 기술
 
