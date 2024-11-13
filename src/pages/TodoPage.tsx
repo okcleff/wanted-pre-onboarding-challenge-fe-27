@@ -1,6 +1,6 @@
 import React, { lazy } from "react";
-import { useParams } from "react-router";
 
+import useGetTodoIdParam from "../hooks/useGetTodoIdParam";
 import TodoAdd from "../components/todo/TodoAdd";
 import TodoList from "../components/todo/TodoList";
 import ErrorBoundaryWrapper from "../components/error/ErrorBoundaryWrapper";
@@ -8,7 +8,7 @@ import ErrorBoundaryWrapper from "../components/error/ErrorBoundaryWrapper";
 const TodoDetail = lazy(() => import("../components/todo/TodoDetail"));
 
 const TodoPage: React.FC = () => {
-  const { id } = useParams();
+  const { selectedTodoId } = useGetTodoIdParam();
 
   return (
     <>
@@ -30,7 +30,7 @@ const TodoPage: React.FC = () => {
 
         <div>
           <h2 className="text-xl font-semibold mb-2">상세 정보</h2>
-          {id && (
+          {selectedTodoId && (
             <ErrorBoundaryWrapper>
               <TodoDetail />
             </ErrorBoundaryWrapper>

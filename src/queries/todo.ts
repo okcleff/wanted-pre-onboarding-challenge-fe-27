@@ -107,7 +107,7 @@ const deleteTodo = async (id: string) => {
 
 export const useDeleteTodo = () => {
   const queryClient = useQueryClient();
-  const { selectedTodoId, deleteTodoIdParam } = useGetTodoIdParam();
+  const { selectedTodoId, goToHome } = useGetTodoIdParam();
 
   return useMutation<DeleteTodoResponse, ErrorResponse, string>({
     mutationFn: deleteTodo,
@@ -120,7 +120,7 @@ export const useDeleteTodo = () => {
       // 뒤로가기를 눌렀을 때 삭제된 할 일이 보이지 않도록 하기 위해 URL을 초기화
       window.history.replaceState(null, "", "/");
       toast.success("할 일이 삭제되었습니다.");
-      deleteTodoIdParam();
+      goToHome();
     },
     onError: (error) =>
       handleAPIError(error, "할 일을 삭제하는데 실패했습니다."),

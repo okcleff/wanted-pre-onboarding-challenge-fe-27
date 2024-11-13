@@ -3,7 +3,14 @@
     {
       "source": "/:path*",
       "destination": "/index.html",
-      "permanent": false
+      "permanent": false,
+      "has": [
+        {
+          "type": "header",
+          "key": "x-vercel-path",
+          "value": "/auth/*"
+        }
+      ]
     }
   ]
 }

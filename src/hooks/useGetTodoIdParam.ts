@@ -1,18 +1,18 @@
-import { useSearchParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const useGetTodoIdParam = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { id: selectedTodoId } = useParams();
 
-  const selectedTodoId = searchParams.get("id") || "";
+  const navigate = useNavigate();
 
   const setSelectedTodoId = (id: string) => {
-    setSearchParams({ id });
+    navigate(`/${id}`);
   };
 
-  const deleteTodoIdParam = () => {
-    setSearchParams({});
+  const goToHome = () => {
+    navigate("/");
   };
 
-  return { selectedTodoId, setSelectedTodoId, deleteTodoIdParam };
+  return { selectedTodoId, setSelectedTodoId, goToHome };
 };
 export default useGetTodoIdParam;

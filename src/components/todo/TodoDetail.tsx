@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router";
 
+import useGetTodoIdParam from "../../hooks/useGetTodoIdParam";
 import CommonInput from "../common/CommonInput";
 import CommonButton from "../common/CommonButton";
 import CommonRadio from "../common/CommonRadio";
@@ -13,7 +13,7 @@ import {
 } from "../../queries/todo";
 
 const TodoDetail = () => {
-  const { id: selectedTodoId } = useParams();
+  const { selectedTodoId } = useGetTodoIdParam();
   const { data: todo } = useGetTodoById(selectedTodoId as string);
   const { data: selectedTodo } = todo;
 

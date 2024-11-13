@@ -1,7 +1,6 @@
-import { useNavigate, useParams } from "react-router";
-
 import TodoPriorityLabel from "./TodoPriorityLabel";
 import TodoListFilter from "./TodoListFilter";
+import useGetTodoIdParam from "../../hooks/useGetTodoIdParam";
 import { useQueryString } from "../../hooks/useQueryString";
 import { todoFilterSanitizer } from "../../utils/todo";
 import { useGetTodos } from "../../queries/todo";
@@ -9,8 +8,7 @@ import { INITIAL_TODO_FILTERS } from "../../constants";
 import type { TodoFilters } from "../../types/todo";
 
 const TodoList = () => {
-  const { id: selectedTodoId } = useParams();
-  const navigate = useNavigate();
+  const { selectedTodoId, setSelectedTodoId } = useGetTodoIdParam();
 
   const { queries: filters, setQueries: setFilters } =
     useQueryString<TodoFilters>({
@@ -38,7 +36,7 @@ const TodoList = () => {
                 className={`flex items-center justify-between p-2 border-b cursor-pointer hover:bg-gray-100 overflow-scroll ${
                   id === selectedTodoId ? "bg-gray-100" : ""
                 }`}
-                onClick={() => navigate(id)}
+                onClick={() => setSelectedTodoId(id)}
               >
                 <span>{title}</span>
                 {todo.priority && (

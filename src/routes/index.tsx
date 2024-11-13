@@ -25,7 +25,7 @@ const router = createBrowserRouter([
         ),
         children: [
           {
-            path: "/:id",
+            path: ":id",
             element: (
               <ErrorBoundaryWrapper>
                 <PrivateRoute element={<TodoPage />} />
