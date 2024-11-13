@@ -6,7 +6,7 @@
 
 ## 프로젝트 실행
 
-### > 라이브 배포 서버([https://wanted-pre-onboarding-challenge-fe-27-kepyskvle.vercel.app/](https://wanted-pre-onboarding-challenge-fe-27-kepyskvle.vercel.app/))
+### > 라이브 배포 서버([https://wanted-pre-onboarding-challenge-fe-27-one.vercel.app/](https://wanted-pre-onboarding-challenge-fe-27-one.vercel.app/))
 
 ### > 로컬 설치 및 실행 방법
 

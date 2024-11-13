@@ -60,6 +60,7 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
         placeholder="검색어 입력..."
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
+        wrapperClassName="mt-0"
       />
 
       <select

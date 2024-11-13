@@ -46,21 +46,21 @@ export const createQueryString = <T extends Record<string, QueryValue>>(
 };
 
 export const initializeQueries = <T extends Record<string, QueryValue>>(
-  initialFilters: T,
+  initialQueries: T,
   searchParams: URLSearchParams,
   sanitizeQueries: (key: keyof T, value: string) => T[keyof T] | undefined,
 ): T => {
-  const filters = { ...initialFilters };
+  const queries = { ...initialQueries };
 
-  (Object.keys(filters) as Array<keyof T>).forEach((key) => {
+  (Object.keys(queries) as Array<keyof T>).forEach((key) => {
     const value = searchParams.get(String(key));
     if (value) {
       const sanitizedValue = sanitizeQueries(key, value);
       if (sanitizedValue !== undefined) {
-        filters[key] = sanitizedValue;
+        queries[key] = sanitizedValue;
       }
     }
   });
 
-  return filters;
+  return queries;
 };
