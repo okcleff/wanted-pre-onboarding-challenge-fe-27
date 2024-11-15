@@ -13,11 +13,11 @@ const useHandleParams = (paramName: string) => {
   const urlQueries = getInitialQueriesFromURL();
   const queryString = createQueryString(urlQueries);
 
-  const setSelectedParam = (value: string) => {
+  const setSelectedParam = (pathname: string) => {
     startTransition(() => {
       navigate({
-        pathname: value,
-        search: queryString ? `${queryString}` : "",
+        pathname,
+        search: queryString || "",
       });
     });
   };
@@ -25,7 +25,7 @@ const useHandleParams = (paramName: string) => {
   const goToHome = () => {
     navigate({
       pathname: `/`,
-      search: queryString ? `${queryString}` : "",
+      search: queryString || "",
     });
   };
 

@@ -50,7 +50,7 @@ export const validationRules: {
 
 export const getErrorMessageByValidation = (
   name: string,
-  value: string
+  value: string,
 ): string | null => {
   const validate = validationRules[name];
 

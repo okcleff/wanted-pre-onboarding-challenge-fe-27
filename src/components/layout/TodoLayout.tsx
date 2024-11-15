@@ -8,9 +8,11 @@ const TodoLayout = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorageAuthInstance.remove();
-    toast.success("로그아웃 되었습니다.");
-    navigate("/auth/signin");
+    if (window.confirm("로그아웃 하시겠습니까?")) {
+      localStorageAuthInstance.remove();
+      toast.success("로그아웃 되었습니다.");
+      navigate("/auth/signin");
+    }
   };
 
   return (

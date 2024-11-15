@@ -50,7 +50,7 @@ export const createQueryString = <T extends Record<string, QueryValue>>(
 export const initializeQueries = <T extends Record<string, QueryValue>>(
   initialQueries: T,
   searchParams: URLSearchParams,
-  sanitizeQueries: (key: keyof T, value: string) => T[keyof T] | undefined,
+  sanitizeQueries: (key: keyof T, value: string) => T[keyof T] | undefined, // 쿼리 value의 유효성 검사 함수
 ): T => {
   const queries = { ...initialQueries };
 

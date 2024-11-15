@@ -43,9 +43,12 @@ const TodoDetail = () => {
 
   const handleUpdateTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    updateTodo(editedTodo, {
-      onSuccess: () => setEditMode(false),
-    });
+
+    if (window.confirm("수정하시겠습니까?")) {
+      updateTodo(editedTodo, {
+        onSuccess: () => setEditMode(false),
+      });
+    }
   };
 
   // 할 일 삭제

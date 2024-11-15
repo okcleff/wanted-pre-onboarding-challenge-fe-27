@@ -17,9 +17,9 @@ const TodoList = () => {
   const { selectedParam: selectedTodoId, setSelectedParam: setSelectedTodoId } =
     useHandleParams("id");
 
-  const { data: todos } = useGetTodos({ ...filters });
+  const { data: todoResponse } = useGetTodos({ ...filters });
 
-  const { data: todoList } = todos;
+  const { data: todoList } = todoResponse;
 
   return (
     <>
