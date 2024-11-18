@@ -20,7 +20,7 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
   filters,
   setFilters,
 }) => {
-  // ---------- 우선순위 선택 로직 ----------
+  // 우선순위 선택
   const handlePriorityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const priority = e.target.value as TodoFilters["priorityFilter"];
     setFilters((prev) => ({
@@ -28,9 +28,8 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
       priorityFilter: priority,
     }));
   };
-  // ---------- 우선순위 선택 로직 ----------
 
-  // ---------- 검색어 입력 로직 ----------
+  // 검색어 입력
   const [searchInput, setSearchInput] = useState(filters.keyword || "");
   const debouncedSearch = useDebounce(searchInput).trim();
 
@@ -40,9 +39,8 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
       keyword: debouncedSearch || undefined,
     }));
   }, [debouncedSearch, setFilters]);
-  // ---------- 검색어 입력 로직 ----------
 
-  // ---------- 정렬 선택 로직 ----------
+  //  정렬 방식 선택
   const handleSortValueChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const [sort, order] = e.target.value.split("-");
     setFilters((prev) => ({
@@ -51,7 +49,6 @@ const TodoListFilter: React.FC<TodoListFilterProps> = ({
       order: order as TodoFilters["order"],
     }));
   };
-  // ---------- 정렬 선택 로직 ----------
 
   // 필터 초기화
   const handleRefreshFilter = () => {

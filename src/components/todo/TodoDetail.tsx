@@ -44,8 +44,6 @@ const TodoDetail = () => {
   const handleUpdateTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log("here");
-
     if (window.confirm("수정하시겠습니까?")) {
       updateTodo(editedTodo, {
         onSuccess: () => setEditMode(false),

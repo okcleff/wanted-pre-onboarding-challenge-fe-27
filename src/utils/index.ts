@@ -47,24 +47,29 @@ export const createQueryString = <T extends Record<string, QueryValue>>(
   return queryString ? `?${queryString}` : "";
 };
 
-export const initializeQueries = <T extends Record<string, QueryValue>>(
-  initialQueries: T,
+export const validateQueries = <T extends Record<string, QueryValue>>(
+  queries: T,
   searchParams: URLSearchParams,
-  sanitizeQueries: (key: keyof T, value: string) => T[keyof T] | undefined, // 쿼리 value의 유효성 검사 함수
+  checkQueryValidation: (key: keyof T, value: string) => T[keyof T] | false, // 쿼리 value의 유효성 검사 함수
 ): T => {
-  const queries = { ...initialQueries };
+  const currentQueries = { ...queries };
 
-  (Object.keys(queries) as Array<keyof T>).forEach((key) => {
+  (Object.keys(currentQueries) as Array<keyof T>).forEach((key) => {
     const value = searchParams.get(String(key));
     if (value) {
-      const sanitizedValue = sanitizeQueries(key, value);
-      if (sanitizedValue !== undefined) {
-        queries[key] = sanitizedValue;
+      const validationResult = checkQueryValidation(key, value);
+
+      if (validationResult === false) {
+        delete currentQueries[key];
+      }
+
+      if (validationResult) {
+        currentQueries[key] = validationResult;
       }
     }
   });
 
-  return queries;
+  return currentQueries;
 };
 
 export const getInitialQueriesFromURL = (): Record<string, QueryValue> => {
