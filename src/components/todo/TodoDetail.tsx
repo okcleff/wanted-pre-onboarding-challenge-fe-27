@@ -44,6 +44,8 @@ const TodoDetail = () => {
   const handleUpdateTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    console.log("here");
+
     if (window.confirm("수정하시겠습니까?")) {
       updateTodo(editedTodo, {
         onSuccess: () => setEditMode(false),
@@ -100,26 +102,27 @@ const TodoDetail = () => {
             <div className="flex justify-end gap-3 mt-5">
               <CommonButton
                 type="submit"
-                buttonText="저장"
                 disabled={
                   !editedTodo.title ||
                   !editedTodo.content ||
                   isUpdatedTodoPending
                 }
-              />
+              >
+                <span>저장</span>
+              </CommonButton>
               <CommonButton
-                type="button"
                 onClick={handleDeleteTodo}
                 className="bg-red-500 hover:bg-red-600"
-                buttonText="삭제"
                 disabled={isDeleteTodoPending}
-              />
+              >
+                <span>삭제</span>
+              </CommonButton>
               <CommonButton
-                type="button"
                 onClick={handleCancelEdit}
                 className="bg-white text-black border border-white hover:bg-white hover:border-gray-400"
-                buttonText="취소"
-              />
+              >
+                <span>취소</span>
+              </CommonButton>
             </div>
           </form>
         ) : (
@@ -134,11 +137,9 @@ const TodoDetail = () => {
             <p>{selectedTodo.content}</p>
 
             <div className="flex justify-end gap-3 mt-5">
-              <CommonButton
-                type="button"
-                onClick={() => setEditMode(true)}
-                buttonText="수정"
-              />
+              <CommonButton onClick={() => setEditMode(true)}>
+                <span>수정</span>
+              </CommonButton>
             </div>
           </div>
         )}

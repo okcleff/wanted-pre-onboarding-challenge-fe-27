@@ -1,1 +1,34 @@
-{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/auth/authinputsection.tsx","./src/components/auth/authpagetitle.tsx","./src/components/common/commonbutton.tsx","./src/components/common/commoninput.tsx","./src/components/common/loading.tsx","./src/components/error/errorboundarywrapper.tsx","./src/components/error/errorfallback.tsx","./src/components/layout/authlayout.tsx","./src/components/layout/todolayout.tsx","./src/components/todo/todoadd.tsx","./src/components/todo/tododetail.tsx","./src/components/todo/todolist.tsx","./src/constants/index.ts","./src/hooks/useauthinput.tsx","./src/hooks/usegettodoidparam.ts","./src/pages/notfoundpage.tsx","./src/pages/signinpage.tsx","./src/pages/signuppage.tsx","./src/pages/todopage.tsx","./src/provider/queryclientprovider.tsx","./src/queries/auth.ts","./src/queries/axiosinstance.ts","./src/queries/todo.ts","./src/types/auth.ts","./src/types/todo.ts","./src/utils/index.ts"],"version":"5.6.3"}
+{
+  "root": [
+    "./src/app.tsx",
+    "./src/main.tsx",
+    "./src/vite-env.d.ts",
+    "./src/components/auth/AuthFormSection.tsx",
+    "./src/components/auth/authpagetitle.tsx",
+    "./src/components/common/commonbutton.tsx",
+    "./src/components/common/commoninput.tsx",
+    "./src/components/common/loading.tsx",
+    "./src/components/error/errorboundarywrapper.tsx",
+    "./src/components/error/errorfallback.tsx",
+    "./src/components/layout/authlayout.tsx",
+    "./src/components/layout/todolayout.tsx",
+    "./src/components/todo/todoadd.tsx",
+    "./src/components/todo/tododetail.tsx",
+    "./src/components/todo/todolist.tsx",
+    "./src/constants/index.ts",
+    "./src/hooks/useauthinput.tsx",
+    "./src/hooks/usegettodoidparam.ts",
+    "./src/pages/notfoundpage.tsx",
+    "./src/pages/signinpage.tsx",
+    "./src/pages/signuppage.tsx",
+    "./src/pages/todopage.tsx",
+    "./src/provider/queryclientprovider.tsx",
+    "./src/queries/auth.ts",
+    "./src/queries/axiosinstance.ts",
+    "./src/queries/todo.ts",
+    "./src/types/auth.ts",
+    "./src/types/todo.ts",
+    "./src/utils/index.ts"
+  ],
+  "version": "5.6.3"
+}

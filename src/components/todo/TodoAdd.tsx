@@ -68,8 +68,9 @@ const TodoAdd = () => {
         <CommonButton
           type="submit"
           disabled={!newTodo.title || !newTodo.content || isPostNewTodoPending}
-          buttonText={isPostNewTodoPending ? "추가 중..." : "추가"}
-        />
+        >
+          <span>{isPostNewTodoPending ? "추가 중..." : "추가"}</span>
+        </CommonButton>
       </div>
     </form>
   );

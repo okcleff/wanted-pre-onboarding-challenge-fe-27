@@ -18,11 +18,9 @@ const NotFoundPage = () => {
           </p>
         </div>
 
-        <CommonButton
-          type="button"
-          buttonText="뒤로가기"
-          onClick={() => navigate(-1)}
-        />
+        <CommonButton onClick={() => navigate(-1)}>
+          <span>뒤로가기</span>
+        </CommonButton>
       </div>
     </div>
   );

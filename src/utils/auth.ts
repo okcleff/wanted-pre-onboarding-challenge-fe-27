@@ -62,6 +62,18 @@ export const getErrorMessageByValidation = (
   return validate(value);
 };
 
+export const getErrorMessageObject = (
+  inputValue: Record<string, string>,
+): Record<string, string> => {
+  return Object.keys(inputValue).reduce((acc, key) => {
+    const errorMessage = getErrorMessageByValidation(key, inputValue[key]);
+    return {
+      ...acc,
+      [key]: errorMessage || "",
+    };
+  }, {});
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const hasAnyTruthyField = (obj: Record<string, any>): boolean => {
   return Object.values(obj).some((value) => Boolean(value));

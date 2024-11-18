@@ -18,12 +18,9 @@ const TodoLayout = () => {
   return (
     <main className="p-8">
       <header className="flex justify-end">
-        <CommonButton
-          type="button"
-          buttonText="로그아웃"
-          onClick={handleLogout}
-          className="w-20"
-        />
+        <CommonButton onClick={handleLogout} className="w-20">
+          <span>로그아웃</span>
+        </CommonButton>
       </header>
       <Outlet />
     </main>

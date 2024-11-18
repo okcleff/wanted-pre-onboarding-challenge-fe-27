@@ -1,4 +1,4 @@
-export interface AuthFormData {
+export interface AuthFormData extends Record<string, string> {
   email: string;
   password: string;
 }

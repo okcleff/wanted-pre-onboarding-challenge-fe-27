@@ -3,22 +3,23 @@ import { twMerge } from "tailwind-merge";
 
 interface CommonButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  buttonText: string; // 필수 속성
+  children: React.ReactNode;
 }
 
 const CommonButton: React.FC<CommonButtonProps> = ({
   className = "",
-  buttonText,
+  children,
+  type = "button",
   ...props
 }) => {
   const mergedClassName = twMerge(
     `w-full py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 transition-colors rounded`,
-    className
+    className,
   );
 
   return (
-    <button className={mergedClassName} {...props}>
-      {buttonText}
+    <button className={mergedClassName} {...props} type={type}>
+      {children}
     </button>
   );
 };

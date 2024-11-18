@@ -6,7 +6,7 @@ interface CommonInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   wrapperClassName?: string;
   labelClassName?: string;
   inputClassName?: string;
-  errorMessage?: string;
+  errorMessage?: string | null;
 }
 
 const CommonInput: React.FC<CommonInputProps> = ({
@@ -22,12 +22,12 @@ const CommonInput: React.FC<CommonInputProps> = ({
 
   const mergedLabelClassName = twMerge(
     `text-sm font-medium text-gray-700`,
-    labelClassName
+    labelClassName,
   );
 
   const mergedInputClassName = twMerge(
     `w-full px-3 border border-gray-200 rounded-sm`,
-    inputClassName
+    inputClassName,
   );
 
   return (

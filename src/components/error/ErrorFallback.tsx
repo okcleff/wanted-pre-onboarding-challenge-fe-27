@@ -34,18 +34,17 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
         </pre>
         <div className="flex justify-between gap-3">
           <CommonButton
-            type="button"
             onClick={handleReset}
             className="bg-blue-500 hover:bg-blue-600"
-            buttonText="홈으로 이동"
-          />
-
+          >
+            <span>홈으로 이동</span>
+          </CommonButton>
           <CommonButton
-            type="button"
             onClick={resetErrorBoundary}
             className="bg-gray-500 hover:bg-gray-600"
-            buttonText="다시 시도"
-          />
+          >
+            <span>다시 시도</span>
+          </CommonButton>
         </div>
       </div>
     </div>
