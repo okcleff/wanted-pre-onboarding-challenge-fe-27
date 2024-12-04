@@ -2,18 +2,18 @@ import { AUTH_ERROR_STATUS } from "../constants";
 import { toast } from "react-toastify";
 
 import { localStorageAuthInstance } from "./auth";
-import type { QueryValue } from "../types/index";
+import type { TQueryValue, TQueryValidator } from "../types/index";
 import type { ErrorResponse } from "../types/auth";
 
 export const handleAPIError = <T extends ErrorResponse>(
   error: T,
-  customErrorMessage: string = "에러가 발생했습니다. 잠시 후 다시 시도해주세요.",
+  customErrorMessage: string = "에러가 발생했습니다. 잠시 후 다시 시도해주세요."
 ) => {
   console.error("ERROR", error);
 
   // 사전에 정의된 인증 관련 에러 상태 코드가 있는지 확인
   const definedAuthError = AUTH_ERROR_STATUS.find(
-    (item) => item.status === error.response?.status,
+    (item) => item.status === error.response?.status
   );
 
   // 인증 관련 에러가 발생했을 경우 토스트 메시지를 표시하고 로컬 스토리지의 토큰을 삭제한 후 로그인 페이지로 이동
@@ -31,8 +31,8 @@ export const handleAPIError = <T extends ErrorResponse>(
   toast.error(error.response?.data.details || customErrorMessage);
 };
 
-export const createQueryString = <T extends Record<string, QueryValue>>(
-  params: T,
+export const createQueryString = <T extends Record<string, TQueryValue>>(
+  params: T
 ): string => {
   if (!params) return "";
 
@@ -47,34 +47,35 @@ export const createQueryString = <T extends Record<string, QueryValue>>(
   return queryString ? `?${queryString}` : "";
 };
 
-export const validateQueries = <T extends Record<string, QueryValue>>(
+export const validateQueryValues = <T extends Record<string, TQueryValue>>(
   queries: T,
   searchParams: URLSearchParams,
-  checkQueryValidation: (key: keyof T, value: string) => T[keyof T] | false, // 쿼리 value의 유효성 검사 함수
+  queryValidator: TQueryValidator<T>
 ): T => {
-  const currentQueries = { ...queries };
+  const targetQueries = { ...queries };
 
-  (Object.keys(currentQueries) as Array<keyof T>).forEach((key) => {
+  (Object.keys(targetQueries) as Array<keyof T>).forEach((key) => {
     const value = searchParams.get(String(key));
+
     if (value) {
-      const validationResult = checkQueryValidation(key, value);
+      const validationResult = queryValidator(key, value);
 
       if (validationResult === false) {
-        delete currentQueries[key];
+        delete targetQueries[key];
       }
 
       if (validationResult) {
-        currentQueries[key] = validationResult;
+        targetQueries[key] = validationResult;
       }
     }
   });
 
-  return currentQueries;
+  return targetQueries;
 };
 
-export const getInitialQueriesFromURL = (): Record<string, QueryValue> => {
+export const getInitialQueriesFromURL = (): Record<string, TQueryValue> => {
   const searchParams = new URLSearchParams(window.location.search);
-  const initialQueries: Record<string, QueryValue> = {};
+  const initialQueries: Record<string, TQueryValue> = {};
 
   searchParams.forEach((value, key) => {
     // 숫자 문자열을 숫자로 변환

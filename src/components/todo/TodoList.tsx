@@ -11,7 +11,7 @@ const TodoList = () => {
   const { queries: filters, setQueries: setFilters } =
     useQueryString<TodoFilters>({
       initialQueries: INITIAL_TODO_FILTERS,
-      checkQueryValidation: todoFilterValidator,
+      queryValidator: todoFilterValidator,
     });
 
   const { selectedParam: selectedTodoId, setSelectedParam: setSelectedTodoId } =

@@ -2,46 +2,49 @@ import { useState, useEffect } from "react";
 import useSearchParams from "./useSearchParams";
 // import { useSearchParams } from "react-router-dom";
 
-import { createQueryString, validateQueries } from "../utils";
-import type { QueryValue } from "../types/index";
+import { createQueryString, validateQueryValues } from "../utils";
+import type { TQueryValue, TQueryValidator } from "../types/index";
 
-export interface QueryConfig<T extends Record<string, QueryValue>> {
+export interface IUseQueryString<T extends Record<string, TQueryValue>> {
   initialQueries: T;
-  checkQueryValidation?: (key: keyof T, value: string) => T[keyof T] | false; // 필터값에 대한 유효성 검증 로직
+  queryValidator?: TQueryValidator<T>; // 필터값에 대한 유효성 검증 로직
 }
 
-const useQueryString = <T extends Record<string, QueryValue>>({
+/**
+ * 주어진 query와 URLSearchParams를 동기화하고 관리하는 커스텀 훅입니다.
+ *
+ * @template T - 쿼리 객체의 타입 (Record<string, TQueryValue>를 확장)
+ * @param {T} [params.initialQueries] - default query value
+ * @param {TQueryValidator<T>} [params.queryValidator] - query value의 유효성을 검사하는 함수 (선택적)
+ * @returns {{
+ *   queries: T,
+ *   setQueries: React.Dispatch<React.SetStateAction<T>>
+ * }} 현재 query와 setQuery 함수
+ *
+ * @example
+ * const { queries, setQueries } = useQueryString({
+ *   initialQueries: { page: '1', sort: 'desc' },
+ *   queryValidator: (key, value) => validateQueryValue(key, value)
+ * });
+ */
+const useQueryString = <T extends Record<string, TQueryValue>>({
   initialQueries,
-  checkQueryValidation = (_, value) => value as T[keyof T],
-}: QueryConfig<T>) => {
+  queryValidator = (_, value) => value as T[keyof T],
+}: IUseQueryString<T>): {
+  queries: T;
+  setQueries: React.Dispatch<React.SetStateAction<T>>;
+} => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // 최초 렌더링 시 URLSearchParams를 기반으로 쿼리스트링 초기화
   const [queries, setQueries] = useState<T>(() =>
-    validateQueries(initialQueries, searchParams, checkQueryValidation),
+    // searchParams를 검증하여 초기 쿼리값 설정
+    validateQueryValues(initialQueries, searchParams, queryValidator)
   );
 
-  // searchParams만 의존성으로 받아서 쿼리스트링 동기화
-  useEffect(() => {
-    const updatedQueries = validateQueries(
-      initialQueries,
-      searchParams,
-      checkQueryValidation,
-    );
-
-    // queries와 updatedQueries가 다른 경우에만 업데이트
-    if (JSON.stringify(queries) !== JSON.stringify(updatedQueries)) {
-      setQueries(updatedQueries);
-    }
-  }, [searchParams, checkQueryValidation, initialQueries]);
-
-  // queries가 변경될 때만 URL 업데이트
+  // queries 변경시 URL 업데이트
   useEffect(() => {
     const queryString = createQueryString(queries);
-
-    if (queryString !== searchParams.toString()) {
-      setSearchParams(queryString);
-    }
+    setSearchParams(queryString);
   }, [queries, setSearchParams]);
 
   return {

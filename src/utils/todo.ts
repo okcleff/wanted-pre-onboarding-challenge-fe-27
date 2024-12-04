@@ -1,14 +1,15 @@
 import { TODO_PRIORITY_OPTIONS } from "../constants";
 import type { TodoFilters, TodoPriority } from "../types/todo";
+import type { TQueryValidator } from "../types/index";
 
-export const todoFilterValidator = (
+export const todoFilterValidator: TQueryValidator<TodoFilters> = (
   key: keyof TodoFilters,
-  value: string,
+  value: string
 ): TodoFilters[keyof TodoFilters] | false => {
   switch (key) {
     case "priorityFilter": {
       const validPriorities: TodoPriority[] = TODO_PRIORITY_OPTIONS.map(
-        (option) => option.value,
+        (option) => option.value
       );
 
       return validPriorities.includes(value as TodoPriority)
